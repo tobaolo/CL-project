@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/jlawanson/CS100 Final Database.db" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><current_tab id="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2610"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="Countries"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE IF NOT EXISTS Countries (
+    `Id` INTEGER NOT NULL PRIMARY KEY,
+    `Name` TEXT,
+    `Nominal_GDP_billions` NUMERIC (6, 3),
+    `HDI_Value` NUMERIC (4, 3)
+);
+
+INSERT INTO Countries
+VALUES
+    (1.0, 'Cameroon', 39.219, 0.556),
+    (2.0, 'The Gambia', 1.741, 0.46),
+    (3.0, 'Ghana', 68.258, 0.592),
+    (4.0, 'Liberia', 3.221, 0.435),
+    (5.0, 'Nigeria', 444.916, 0.532),
+    (6.0, 'Sierra Leone', 3.998, 0.419),
+    (7.0, 'Benin', 11.184, 0.515),
+    (8.0, 'Burkina Faso', 14.882, 0.423),
+    (9.0, 'Cabo Verde', 2.042, 0.654),
+    (10.0, 'Chad', 11.372, 0.404),
+    (11.0, 'Côte d''Ivoire', 45.252, 0.492),
+    (12.0, 'Equatorial Guinea', 12.432, 0.591),
+    (13.0, 'Guinea', 12.623, 0.459),
+    (14.0, 'Guinea-Bissau', 1.538, 0.455),
+    (15.0, 'Mali', 17.833, 0.427),
+    (16.0, 'Mauritania', 5.569, 0.52),
+    (17.0, 'Niger', 9.724, 0.354),
+    (18.0, 'Senegal', 25.32, 0.505),
+    (19.0, 'Togo', 5.592, 0.503);
+</sql><sql name="SQL 1"></sql><current_tab id="1"/></tab_sql></sqlb_project>
