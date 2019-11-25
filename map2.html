@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <meta src=https://developers.google.com/fusiontables/docs/samples/mouseover_map_styles>
+    <title>Fusion Tables Layer Example: Mouseover Map Styles</title>
+  </head>
+  <body>
+
+<style type="text/css">
+      #map-canvas {
+        height: 500px;
+        width: 600px;
+      }
+    </style>
+    <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB45a2xoq_9DskmFsrLCMQFmXdsH2ycufc&callback=initMap"></script>
+
+    <script type="text/javascript">
+      var colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'];
+      var map;
+
+      function initialize() {
+        var myOptions = {
+          zoom: 3,
+          center: new google.maps.LatLng(6, 26),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+            myOptions);
+
+        // Initialize JSONP request
+        var script = document.createElement('script');
+        var url = ['https://www.googleapis.com/fusiontables/v1/query?'];
+        url.push('sql=');
+        var query = 'SELECT name, kml_4326 FROM ' +
+            '1foc3xO9DyfSIF6ofvN0kp2bxSfSeKog5FbdWdQ';
+        var encodedQuery = encodeURIComponent(query);
+        url.push(encodedQuery);
+        url.push('&callback=drawMap');
+        url.push('&key=AIzaSyAm9yWCV7JPCTHCJut8whOjARd7pwROFDQ');
+        script.src = url.join('');
+        var body = document.getElementsByTagName('body')[0];
+        body.appendChild(script);
+      }
+
+      function drawMap(data) {
+        const africa = ['Algeria', 'Angola', 'Benin', 'Botswana', 'Burkina Faso', 'Burundi', 'Cameroon', 'Cape Verde', 'Central African Rep.', 'Chad', 'Comoros', 'Congo (Brazzaville)', 'Congo (Kinshasa)', 'Ivory Coast', 'Djibouti', 
+                        'Egypt', 'Eq. Guinea', 'Eritrea', 'Ethiopia', 'Gabon', 'Gambia', 'Ghana', 'Guinea', 'Guinea Bissau', 'Kenya', 'Lesotho', 'Liberia', 'Libya', 'Madagascar', 'Malawi', 'Mali', 'Mauritania', 'Mauritius', 'Mayotte', 'Morocco', 
+                        'Mozambique', 'Namibia', 'Niger', 'Nigeria', 'Rwanda', 'Senegal', 'Seychelles', 'Sierra Leone', 'Somalia', 'South Africa', 'Sudan', 'S. Sudan', 'Swaziland', 'Tanzania', 'Togo', 'Tunisia', 'Uganda', 'W. Sahara', 'Zambia', 'Zimbabwe']
+        var rows = data['rows'];
+        console.log(rows)
+        for (var i in rows) {
+          if (africa.indexOf(rows[i][0]) >= 0) {
+            var newCoordinates = [];
+            var geometries = rows[i][1]['geometries'];
+            if (geometries) {
+              for (var j in geometries) {
+                newCoordinates.push(constructNewCoordinates(geometries[j]));
+              }
+            } else {
+              newCoordinates = constructNewCoordinates(rows[i][1]['geometry']);
+            }
+            var randomnumber = Math.floor(Math.random() * 4);
+            var country = new google.maps.Polygon({
+              paths: newCoordinates,
+              strokeColor: colors[randomnumber],
+              strokeOpacity: 0,
+              strokeWeight: 1,
+              fillColor: colors[randomnumber],
+              fillOpacity: 0.2
+            });
+            var infowindow = new google.maps.InfoWindow({
+                content: 'Country name'
+                });
+            google.maps.event.addListener(country, 'mouseover', function() {
+              this.setOptions({fillOpacity: 1});
+              infowindow.open(map, country);
+              console.log("I see it im just being annoyin")
+            });
+            google.maps.event.addListener(country, 'mouseout', function() {
+              this.setOptions({fillOpacity: 0.2});
+            });
+
+            country.setMap(map, country);
+          }
+        }
+      }
+
+      function constructNewCoordinates(polygon) {
+        var newCoordinates = [];
+        var coordinates = polygon['coordinates'][0];
+        for (var i in coordinates) {
+          newCoordinates.push(
+              new google.maps.LatLng(coordinates[i][1], coordinates[i][0]));
+        }
+        return newCoordinates;
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+<div id="map-canvas"></div>
+</body>
+</html>
