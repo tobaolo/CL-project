@@ -19,12 +19,14 @@ class Country extends React.Component {
     super(props);
     this.state = {
       countryInfo: [],
-      loading: true
+      loading: true,
+      countryId: 6
     };
   }
 
   componentDidMount() {
-    fetch(`/country`)
+    // Should be `/country/${this.props.id}`
+    fetch(`/country/${this.state.countryId}`)
       .then(response => response.json())
       .then(countryInfo => this.setState({ countryInfo, loading: false }))
       .catch(error => console.log(error))
@@ -44,14 +46,14 @@ class Country extends React.Component {
       console.log(countryInfo);
       return (
         <React.Fragment>
-          <h1>Ghana</h1>
+          <h1>{countryInfo[0].Name}</h1>
           <Container fluid="true">
             <Row>
               <Col>
-                <h4>Population: 29,767,108</h4>
-                <h4>GDP: 65.556</h4>
-                <h4>Life Expectancy: 63.463</h4>
-                <h4>School Enrollment: 103.569</h4>
+                <h4>Population: {countryInfo[1][0].population}</h4>
+                <h4>GDP: {countryInfo[1][0].GDP}</h4>
+                <h4>Life Expectancy: {countryInfo[1][0].lifeExp}</h4>
+                <h4>School Enrollment: {countryInfo[1][0].enrollment}</h4>
               </Col>
               <Col>
                 <Image
@@ -62,7 +64,7 @@ class Country extends React.Component {
               </Col>
               <Col>
                 <Image
-                  src="https://www.freeworldmaps.net/africa/ghana/ghana-physical-map.jpg"
+                  src={countryInfo[0].Image}
                   className="country-map"
                 />
               </Col>
@@ -71,29 +73,29 @@ class Country extends React.Component {
           <div>
             <h3>Articles</h3>
             <ListGroup variant="flush">
-              <ListGroup.Item>
+              <ListGroup.Item active={false}>
                 <Link to="article" className="articles-list">
-                  Ghana Labor Practices
+                  {countryInfo[1][0].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item>
+              <ListGroup.Item active={false}>
                 <Link to="article" className="articles-list">
-                  Ghana Labor Practices
+                  {countryInfo[1][1].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item active>
+              <ListGroup.Item active={true}>
                 <Link to="/article" className="articles-list">
-                  Ghana Labor Practices
+                  {countryInfo[1][2].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item>
+              <ListGroup.Item active={false}>
                 <Link to="/article" className="articles-list">
-                  Ghana Labor Practices
+                  {countryInfo[1][3].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item>
+              <ListGroup.Item active={false}>
                 <Link to="/article" className="articles-list">
-                  Ghana Labor Practices
+                  {countryInfo[1][4].articleTitle}
                 </Link>
               </ListGroup.Item>
             </ListGroup>

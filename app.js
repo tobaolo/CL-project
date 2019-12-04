@@ -30,16 +30,17 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "public", "index.html"));
 });
 
-app.get("/country", (req, res) => {
-    let countryId = 1;
+app.get("/country/:id", (req, res) => {
+    let countryId = req.params.id;
     let countryInfo = [];
+    console.log(req);
 
     // SQL command to get name of country in question
-    let sql1 = "SELECT Name FROM countries WHERE id = ?";
-    db.get(sql1, [countryId], (err, countryName) => {
+    let sql1 = "SELECT Name, Image FROM countries WHERE id = ?";
+    db.get(sql1, [countryId], (err, data) => {
         if (err) throw err;
         // Add the name to data to be sent back
-        countryInfo.push(countryName);
+        countryInfo.push(data);
 
         // SQL command to get important snapshot information and articles about country
         let sql2 = `SELECT
@@ -48,8 +49,9 @@ app.get("/country", (req, res) => {
                     snapshots.LifeExpectancyAtBirth AS lifeExp,
                     snapshots.SchoolEnrollmentprimary AS enrollment,
                     snapshots.ChildLaborPercent AS cLabor,
-                    articles.title AS title,
-					articles.timeframe AS timeframe
+                    articles.title AS articleTitle,
+                    articles.timeframe AS timeframe,
+                    articles.id AS articleId
                     FROM snapshots JOIN articles
                     ON snapshots.Timeframe = articles.timeframe
                     WHERE articles.countryId = ?
