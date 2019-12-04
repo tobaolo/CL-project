@@ -34,7 +34,7 @@ function App() {
             <Redirect exact from="/" to="home" />
             <Route exact path="/home" component={Home} />
             <Route exact path="/country" component={Country} />
-            <Route exact path="/article" component={Article} />
+            <Route path="/article" component={Article} />
           </Switch>
         </Container>
       </div>

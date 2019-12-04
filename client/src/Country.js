@@ -36,14 +36,12 @@ class Country extends React.Component {
     const { countryInfo, loading } = this.state;
 
     if (loading) {
-      console.log(countryInfo);
       return (
         <div className="text-center">
           <Spinner animation="grow" variant="warning" className="mx-auto" />
         </div>
       );
     } else {
-      console.log(countryInfo);
       return (
         <React.Fragment>
           <h1>{countryInfo[0].Name}</h1>
@@ -74,27 +72,27 @@ class Country extends React.Component {
             <h3>Articles</h3>
             <ListGroup variant="flush">
               <ListGroup.Item active={false}>
-                <Link to="article" className="articles-list">
+                <Link to={`/article/${countryInfo[1][0].articleId}`} className="articles-list">
                   {countryInfo[1][0].articleTitle}
                 </Link>
               </ListGroup.Item>
               <ListGroup.Item active={false}>
-                <Link to="article" className="articles-list">
+                <Link to={`/article/${countryInfo[1][1].articleId}`} className="articles-list">
                   {countryInfo[1][1].articleTitle}
                 </Link>
               </ListGroup.Item>
               <ListGroup.Item active={true}>
-                <Link to="/article" className="articles-list">
+                <Link to={`/article/${countryInfo[1][2].articleId}`} className="articles-list">
                   {countryInfo[1][2].articleTitle}
                 </Link>
               </ListGroup.Item>
               <ListGroup.Item active={false}>
-                <Link to="/article" className="articles-list">
+                <Link to={`/article/${countryInfo[1][3].articleId}`} className="articles-list">
                   {countryInfo[1][3].articleTitle}
                 </Link>
               </ListGroup.Item>
               <ListGroup.Item active={false}>
-                <Link to="/article" className="articles-list">
+                <Link to={`/article/${countryInfo[1][4].articleId}`} className="articles-list">
                   {countryInfo[1][4].articleTitle}
                 </Link>
               </ListGroup.Item>

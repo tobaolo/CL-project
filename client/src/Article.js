@@ -4,52 +4,61 @@ import React from "react";
 import "./styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Importing a few elements from react-bootstrap for design aesthetics
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import Spinner from "react-bootstrap/Spinner";
 
 class Article extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      articleInfo: [],
+      loading: true,
+      articleId: 7
+    };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    fetch(`/article/${this.state.articleId}`)
+      .then(response => response.json())
+      .then(articleInfo => this.setState({ articleInfo, loading: false }));
+  }
 
   render() {
+    const { articleInfo, loading } = this.state;
+
+    if (loading) {
+      return (
+        <div className="text-center">
+          <Spinner animation="grow" variant="warning" className="mx-auto" />
+        </div>
+      );
+    } else {
+      console.log(articleInfo);
       return (
         <React.Fragment>
           <Container fluid="true">
             <Row>
               <Col>
-                <h1>Ghana Labor Practices</h1>
-                <h3>Ghana</h3>
+                <h1>{articleInfo.title}</h1>
+                <h3>{articleInfo.articleCountry}</h3>
                 <br />
                 <h2>Abstract</h2>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.{" "}
+                  {articleInfo.abstract}.{" "}
                   <span>
                     <b>
-                      Read full text{" "}
-                      <a href="http://hubrural.org/IMG/pdf/stcp_ghana_labor_practices.pdf">
-                        here
-                      </a>
-                      .
+                      Read full text <a href={articleInfo.link}>here</a>.
                     </b>
                   </span>
                 </p>
               </Col>
               <Col>
                 <Image
-                  src="https://www.freeworldmaps.net/africa/ghana/ghana-physical-map.jpg"
+                  src={articleInfo.countryImage}
                   className="country-map"
                 />
               </Col>
@@ -84,6 +93,7 @@ class Article extends React.Component {
           </Container>
         </React.Fragment>
       );
+    }
   }
 }
 

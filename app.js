@@ -66,7 +66,28 @@ app.get("/country/:id", (req, res) => {
     });
 });
 
+app.get("/article/:id", (req, res) => {
+    let articleId = req.params.id;
 
+    // SQL command to get article info and country map
+    let sql = `SELECT articles.title AS title,
+                articles.sentiment AS sentiment,
+                articles.subjectivity AS subjectivity,
+                articles.abstract AS abstract,
+                articles.reading_level AS readingLevel,
+                articles.link AS link,
+                countries.Name AS articleCountry,
+                countries.Image AS countryImage
+                FROM articles JOIN countries
+                ON articles.countryId = countries.Id
+                WHERE articles.id = ?`
+
+    // Get and send data response
+    db.get(sql, [articleId], (err, data) => {
+        if (err) throw err;
+        res.json(data);
+    })
+})
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}!`);
