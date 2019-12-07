@@ -1,5 +1,8 @@
 import sys
 import re
+from textblob import TextBlob
+import csv
+
 doc = sys.argv[1]
 f = open(doc, "r")
 text = f.read()
@@ -17,7 +20,8 @@ def numWords(text):
 
 def numSent(text):
     sent = re.split(r' *[\.\?!][\'"\)\]]* *', text)
-    sent.remove('')
+    if ('' in sent):
+        sent.remove('')
     return len(sent)
 
 def calcAvgWrdLen(text):
@@ -29,7 +33,8 @@ def calcAvgWrdLen(text):
 
 def calcAvgSentLen(text):
     sent = re.split(r' *[\.\?!][\'"\)\]]* *', text)
-    sent.remove('')
+    if ('' in sent):
+        sent.remove('')
     sum = 0.0
     for sentence in sent:
         sum += numWords(sentence)
@@ -45,9 +50,12 @@ def colemanLiau(text):
         - 15.8
     )
 
+sentiment = TextBlob(text)
 
 print("-------------------")
 print("File Name: %s" %doc)
+print("Sentiment Score from -1 to 1: %f" %sentiment.sentiment.polarity)
+print("Objectivity(0) vs Subjectivity(1) Score from 0 to 1: %f" %sentiment.sentiment.subjectivity)
 print("Number of Chars: %i chars" %numChars(text))
 print("Number of Words: %i words" %numWords(text))
 print("Number of Sent: %i sentences" %numSent(text))
@@ -55,3 +63,9 @@ print("Average word length: %f chars" %calcAvgWrdLen(text))
 print("Average Sentence length: %f words" %calcAvgSentLen(text))
 print("Reading Level: %f" %colemanLiau(text))
 print("-------------------")
+
+with open('articleData.csv', 'a', newline='') as articleData:
+    writer = csv.writer(articleData)
+    writer.writerow([])
+    writer.writerow([doc, sentiment.sentiment.polarity, sentiment.sentiment.subjectivity, numChars(text), numWords(text), numSent(text), calcAvgWrdLen(text), calcAvgSentLen(text), colemanLiau(text)])
+    print('done')
