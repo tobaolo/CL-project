@@ -79,7 +79,7 @@ class Home extends React.Component {
           </Link>
         </div>
         {this.state.isHovering && <CountryHover />}
-        <div class="slider">Slider goes here</div>
+        <div className="slider">Slider goes here</div>
       </React.Fragment>
     );
   }

@@ -12,8 +12,6 @@ import Image from "react-bootstrap/Image";
 import Spinner from "react-bootstrap/Spinner";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 
-import { Link } from "react-router-dom";
-
 
 class Article extends React.Component {
   constructor(props) {
@@ -36,7 +34,7 @@ class Article extends React.Component {
     if (loading) {
       return (
         <div className="text-center">
-          <Spinner animation="grow" variant="warning" className="mx-auto" />
+          <Spinner animation="border" variant="warning" className="mx-auto" />
         </div>
       );
     } else {
@@ -44,8 +42,8 @@ class Article extends React.Component {
         <React.Fragment>
           <Breadcrumb>
             <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <Link to={`/country/${articleInfo.countryId}`}>{articleInfo.articleCountry}</Link>
+            <Breadcrumb.Item href={`/country/${articleInfo.countryId}`}>
+              {articleInfo.articleCountry}
             </Breadcrumb.Item>
             <Breadcrumb.Item active>{articleInfo.title}</Breadcrumb.Item>
           </Breadcrumb>

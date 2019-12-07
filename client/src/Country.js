@@ -3,6 +3,8 @@ import React from "react";
 // Importing CSS
 import "./styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "rc-slider/assets/index.css";
+import "rc-tooltip/assets/bootstrap.css";
 
 // Importing a few elements from react-bootstrap for design aesthetics
 import Container from "react-bootstrap/Container";
@@ -12,8 +14,11 @@ import Image from "react-bootstrap/Image";
 import ListGroup from "react-bootstrap/ListGroup";
 import Spinner from "react-bootstrap/Spinner";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import Jumbotron from 'react-bootstrap/Jumbotron';
 
 import { Link } from "react-router-dom";
+
+import Slider from "rc-slider";
 
 
 class PercentImage extends React.Component {
@@ -53,8 +58,10 @@ class Country extends React.Component {
     this.state = {
       countryInfo: [],
       loading: true,
+      timeframe: {value: 0},
       countryId: 5
     };
+    // this.updateSliderTimeframe = this.updateSliderTimeframe.bind(this);
   }
 
   componentDidMount() {
@@ -65,13 +72,20 @@ class Country extends React.Component {
       .catch(error => console.log(error));
   }
 
+  updateSliderTimeframe(value) {
+    this.setState({timeframe: {value}});
+  }
+
   render() {
     const { countryInfo, loading } = this.state;
+    const timeframe = this.state.timeframe.value;
+
+    const wrapperStyle = { width: 700, margin: 30 };
 
     if (loading) {
       return (
         <div className="text-center">
-          <Spinner animation="grow" variant="warning" className="mx-auto" />
+          <Spinner animation="border" variant="warning" className="mx-auto" />
         </div>
       );
     } else {
@@ -82,27 +96,50 @@ class Country extends React.Component {
             <Breadcrumb.Item active>{countryInfo[0].Name}</Breadcrumb.Item>
           </Breadcrumb>
           <h1>{countryInfo[0].Name}</h1>
-          <Container fluid="true">
-            <Row>
-              <Col>
-                <h4>Population: {countryInfo[1][0].population}</h4>
-                <h4>GDP: {countryInfo[1][0].GDP}</h4>
-                <h4>Life Expectancy: {countryInfo[1][0].lifeExp}</h4>
-                <h4>School Enrollment: {countryInfo[1][0].enrollment}</h4>
-              </Col>
-              <Col>
-                <div className="flex-container">
-                  <PercentImage
-                    percentage={Math.round(countryInfo[1][0].cLabor / 2)}
-                  />
-                </div>
-                <div className="slider">Slider goes here</div>
-              </Col>
-              <Col>
-                <Image src={countryInfo[0].Image} className="country-map" />
-              </Col>
-            </Row>
-          </Container>
+          <div>
+            <Container fluid="true">
+              <Row>
+                <Col>
+                  <h4>Population: {countryInfo[1][timeframe].population}</h4>
+                  <h4>GDP: {countryInfo[1][timeframe].GDP}</h4>
+                  <h4>Life Expectancy: {countryInfo[1][timeframe].lifeExp}</h4>
+                  <h4>
+                    School Enrollment: {countryInfo[1][timeframe].enrollment}
+                  </h4>
+                </Col>
+                <Col>
+                  <Jumbotron className="flex-container">
+                    <PercentImage
+                      percentage={Math.round(
+                        countryInfo[1][timeframe].cLabor / 2
+                      )}
+                    />
+                  </Jumbotron>
+                </Col>
+                <Col>
+                  <Image src={countryInfo[0].Image} className="country-map" />
+                </Col>
+              </Row>
+            </Container>
+          </div>
+          <div style={wrapperStyle}>
+            <Slider
+              className="slider"
+              min={0}
+              max={4}
+              /* value={0} */
+              marks={{
+                0: "1996-2000",
+                1: "2001-2005",
+                2: "2006-2010",
+                3: "2011-2015",
+                4: "2015-2020"
+              }}
+              step={null}
+              onChange={this.updateSliderTimeframe.bind(this)}
+              /* onAfterChange={this.updateSliderTimeframe(value)} */
+            />
+          </div>
           <div>
             <h3>Articles</h3>
             <ListGroup variant="flush">
