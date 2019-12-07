@@ -8,7 +8,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
 // Importing a few elements from react-router-dom to handle routing in our application
-import { BrowserRouter, Link, Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 
 // Import our created components
 import Home from './Home';
