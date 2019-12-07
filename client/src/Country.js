@@ -11,8 +11,41 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import ListGroup from "react-bootstrap/ListGroup";
 import Spinner from "react-bootstrap/Spinner";
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
 import { Link } from "react-router-dom";
+
+
+class PercentImage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.createFigure = this.createFigure.bind(this);
+  }
+
+  createFigure(num) {
+    let imageArr = [];
+
+    for (let i = 0; i < num; i++) {
+      imageArr.push(
+        <Image
+          key={i}
+          src="https://clipartstation.com/wp-content/uploads/2018/10/human-figure-clipart.png"
+          className="percent-image"
+        />
+      );
+    }
+
+    return imageArr;
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        {this.createFigure(this.props.percentage)}
+      </React.Fragment>
+    );
+  }
+}
 
 class Country extends React.Component {
   constructor(props) {
@@ -20,16 +53,16 @@ class Country extends React.Component {
     this.state = {
       countryInfo: [],
       loading: true,
-      countryId: 1
+      countryId: 5
     };
   }
 
   componentDidMount() {
-    // Should be `/country/${this.props.id}`
+    // Should be this.props.location.pathname
     fetch(`/country/${this.state.countryId}`)
       .then(response => response.json())
       .then(countryInfo => this.setState({ countryInfo, loading: false }))
-      .catch(error => console.log(error))
+      .catch(error => console.log(error));
   }
 
   render() {
@@ -44,6 +77,10 @@ class Country extends React.Component {
     } else {
       return (
         <React.Fragment>
+          <Breadcrumb>
+            <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+            <Breadcrumb.Item active>{countryInfo[0].Name}</Breadcrumb.Item>
+          </Breadcrumb>
           <h1>{countryInfo[0].Name}</h1>
           <Container fluid="true">
             <Row>
@@ -54,17 +91,15 @@ class Country extends React.Component {
                 <h4>School Enrollment: {countryInfo[1][0].enrollment}</h4>
               </Col>
               <Col>
-                <Image
-                  src="https://i.ya-webdesign.com/images/children-holding-hands-png-4.png"
-                  className="country-map"
-                />
+                <div className="flex-container">
+                  <PercentImage
+                    percentage={Math.round(countryInfo[1][0].cLabor / 2)}
+                  />
+                </div>
                 <div className="slider">Slider goes here</div>
               </Col>
               <Col>
-                <Image
-                  src={countryInfo[0].Image}
-                  className="country-map"
-                />
+                <Image src={countryInfo[0].Image} className="country-map" />
               </Col>
             </Row>
           </Container>
@@ -72,27 +107,42 @@ class Country extends React.Component {
             <h3>Articles</h3>
             <ListGroup variant="flush">
               <ListGroup.Item active={false}>
-                <Link to={`/article/${countryInfo[1][0].articleId}`} className="articles-list">
+                <Link
+                  to={`/article/${countryInfo[1][0].articleId}`}
+                  className="articles-list"
+                >
                   {countryInfo[1][0].articleTitle}
                 </Link>
               </ListGroup.Item>
               <ListGroup.Item active={false}>
-                <Link to={`/article/${countryInfo[1][1].articleId}`} className="articles-list">
+                <Link
+                  to={`/article/${countryInfo[1][1].articleId}`}
+                  className="articles-list"
+                >
                   {countryInfo[1][1].articleTitle}
                 </Link>
               </ListGroup.Item>
               <ListGroup.Item active={true}>
-                <Link to={`/article/${countryInfo[1][2].articleId}`} className="articles-list">
+                <Link
+                  to={`/article/${countryInfo[1][2].articleId}`}
+                  className="articles-list"
+                >
                   {countryInfo[1][2].articleTitle}
                 </Link>
               </ListGroup.Item>
               <ListGroup.Item active={false}>
-                <Link to={`/article/${countryInfo[1][3].articleId}`} className="articles-list">
+                <Link
+                  to={`/article/${countryInfo[1][3].articleId}`}
+                  className="articles-list"
+                >
                   {countryInfo[1][3].articleTitle}
                 </Link>
               </ListGroup.Item>
               <ListGroup.Item active={false}>
-                <Link to={`/article/${countryInfo[1][4].articleId}`} className="articles-list">
+                <Link
+                  to={`/article/${countryInfo[1][4].articleId}`}
+                  className="articles-list"
+                >
                   {countryInfo[1][4].articleTitle}
                 </Link>
               </ListGroup.Item>

@@ -16,3 +16,15 @@
 .articles-list {
     color: black;
 }
+
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    height: 20em;
+    align-content: flex-start;
+}
+
+.percent-image {
+    height: 10%;
+    width: 10%;
+}

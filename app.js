@@ -75,6 +75,7 @@ app.get("/article/:id", (req, res) => {
                 articles.abstract AS abstract,
                 articles.reading_level AS readingLevel,
                 articles.link AS link,
+                articles.countryId AS countryId,
                 countries.Name AS articleCountry,
                 countries.Image AS countryImage
                 FROM articles JOIN countries
