@@ -10,19 +10,22 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Spinner from "react-bootstrap/Spinner";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+
+import { Link } from "react-router-dom";
+
 
 class Article extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       articleInfo: [],
-      loading: true,
-      articleId: 7
+      loading: true
     };
   }
-
+  // look at this.props.location or window.location
   componentDidMount() {
-    fetch(`/article/${this.state.articleId}`)
+    fetch(this.props.location.pathname)
       .then(response => response.json())
       .then(articleInfo => this.setState({ articleInfo, loading: false }));
   }
@@ -37,9 +40,15 @@ class Article extends React.Component {
         </div>
       );
     } else {
-      console.log(articleInfo);
       return (
         <React.Fragment>
+          <Breadcrumb>
+            <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link to={`/country/${articleInfo.countryId}`}>{articleInfo.articleCountry}</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>{articleInfo.title}</Breadcrumb.Item>
+          </Breadcrumb>
           <Container fluid="true">
             <Row>
               <Col>
@@ -57,10 +66,7 @@ class Article extends React.Component {
                 </p>
               </Col>
               <Col>
-                <Image
-                  src={articleInfo.countryImage}
-                  className="country-map"
-                />
+                <Image src={articleInfo.countryImage} className="country-map" />
               </Col>
             </Row>
             <h2>Charts</h2>

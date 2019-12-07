@@ -33,7 +33,6 @@ app.get("/", (req, res) => {
 app.get("/country/:id", (req, res) => {
     let countryId = req.params.id;
     let countryInfo = [];
-    console.log(req);
 
     // SQL command to get name of country in question
     let sql1 = "SELECT Name, Image FROM countries WHERE id = ?";
@@ -76,6 +75,7 @@ app.get("/article/:id", (req, res) => {
                 articles.abstract AS abstract,
                 articles.reading_level AS readingLevel,
                 articles.link AS link,
+                articles.countryId AS countryId,
                 countries.Name AS articleCountry,
                 countries.Image AS countryImage
                 FROM articles JOIN countries
