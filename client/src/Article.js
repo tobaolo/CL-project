@@ -17,12 +17,11 @@ class Article extends React.Component {
     this.state = {
       articleInfo: [],
       loading: true,
-      articleId: 7
     };
   }
-
+// look at this.props.location or window.location
   componentDidMount() {
-    fetch(`/article/${this.state.articleId}`)
+    fetch(this.props.location.pathname)
       .then(response => response.json())
       .then(articleInfo => this.setState({ articleInfo, loading: false }));
   }

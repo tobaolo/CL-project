@@ -33,7 +33,6 @@ app.get("/", (req, res) => {
 app.get("/country/:id", (req, res) => {
     let countryId = req.params.id;
     let countryInfo = [];
-    console.log(req);
 
     // SQL command to get name of country in question
     let sql1 = "SELECT Name, Image FROM countries WHERE id = ?";

@@ -20,7 +20,7 @@ class Country extends React.Component {
     this.state = {
       countryInfo: [],
       loading: true,
-      countryId: 6
+      countryId: 1
     };
   }
 
