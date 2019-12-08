@@ -12,11 +12,35 @@ import {
   GoogleMap,
   withScriptjs,
   withGoogleMap,
-  OverlayView,
   Polygon
 } from "react-google-maps";
 
 const WrappedMap = withScriptjs(withGoogleMap(Map));
+
+var boundary = require("./mygeodata/ne_10m_admin_0_countries.json")
+console.log(boundary)
+
+const westAfrica = [
+  'Benin', 
+  'Burkina Faso', 
+  'Cameroon', 
+  'Cape Verde', 
+  'Chad', 
+  'Ivory Coast', 
+  'Equatorial Guinea', 
+  'The Gambia', 
+  'Ghana', 
+  'Guinea', 
+  'Guinea-Bissau', 
+  'Liberia', 
+  'Mali', 
+  'Mauritania', 
+  'Niger', 
+  'Nigeria', 
+  'Senegal', 
+  'Sierra Leone',
+  'Togo'
+]
 
 function CountryHover() {
   const [show, setShow] = React.useState(true);
@@ -50,6 +74,12 @@ function CountryHover() {
 }
 
 function Map() {
+
+  for (var i = 0; i < boundary['features'].length; i++) {
+    if (westAfrica.indexOf(boundary['features'][i]['properties']['NAME_EN']) >= 0) {
+      console.log(boundary['features'][i]['properties']['NAME'])
+    }
+  }
   // Define the LatLng coordinates for the polygon's path.
   var triangleCoords = [
     { lat: 14, lng: 4 },
@@ -66,12 +96,11 @@ function Map() {
         geodesic={true}
         options={{
           strokeColor: "#ff2527",
-          strokeOpacity: 0.75,
+          strokeOpacity: 1,
           strokeWeight: 2,
           fillColor: "#ff2527"
         }}
       />
-      <OverlayView position={{ lat: 14, lng: 4 }} />
     </React.Fragment>
   );
 }
@@ -85,7 +114,9 @@ class Home extends React.Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    
+  }
 
   handleMouseHover() {
     this.setState(this.toggleHoverState);
@@ -103,7 +134,7 @@ class Home extends React.Component {
         <div style={{ width: "100vw", height: "50vw" }}>
           <WrappedMap
             googleMapURL={
-              "https://maps.googleapis.com/maps/api/js?key=AIzaSyB45a2xoq_9DskmFsrLCMQFmXdsH2ycufc&libraries=gemoetry,drawing,places&callback=initMap"
+              "https://maps.googleapis.com/maps/api/js?key=AIzaSyB45a2xoq_9DskmFsrLCMQFmXdsH2ycufc&libraries=gemoetry,drawing,places"
             }
             loadingElement={<div style={{ height: "100%" }} />}
             containerElement={<div style={{ height: "100%" }} />}
