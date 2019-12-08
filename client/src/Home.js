@@ -45,6 +45,7 @@ function CountryHover() {
 }
 
 function Map() {
+  
 
   // Define the LatLng coordinates for the polygon's path.
   var triangleCoords = [
