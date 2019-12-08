@@ -5,9 +5,11 @@
     margin-right: auto;
 }
 
-.slider {
-    text-align: center;
-}
+/* .slider {
+    border: 30;
+    width: 300;
+    margin: 50;
+} */
 
 .country-map {
     width: 33vw;
@@ -20,8 +22,9 @@
 .flex-container {
     display: flex;
     flex-flow: row wrap;
-    height: 20em;
+    height: 18em;
     align-content: flex-start;
+    padding: 1rem;
 }
 
 .percent-image {
