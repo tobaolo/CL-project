@@ -58,10 +58,10 @@ class Country extends React.Component {
     this.state = {
       countryInfo: [],
       loading: true,
-      timeframe: {value: 0},
+      timeframe: {value: 4},
       countryId: 5
     };
-    // this.updateSliderTimeframe = this.updateSliderTimeframe.bind(this);
+    this.listItemActive = this.listItemActive.bind(this);
   }
 
   componentDidMount() {
@@ -76,11 +76,19 @@ class Country extends React.Component {
     this.setState({timeframe: {value}});
   }
 
+  listItemActive(eventKey) {
+    if (eventKey === this.state.timeframe.value) {
+      return true;
+    }
+    return false;
+  }
+
+
   render() {
     const { countryInfo, loading } = this.state;
     const timeframe = this.state.timeframe.value;
 
-    const wrapperStyle = { width: 700, margin: 30 };
+    const wrapperStyle = { width: "80vw", margin: "2rem", display: "block", "marginLeft": "auto", "marginRight": "auto" };
 
     if (loading) {
       return (
@@ -127,7 +135,7 @@ class Country extends React.Component {
               className="slider"
               min={0}
               max={4}
-              /* value={0} */
+              defaultValue={4}
               marks={{
                 0: "1996-2000",
                 1: "2001-2005",
@@ -137,13 +145,15 @@ class Country extends React.Component {
               }}
               step={null}
               onChange={this.updateSliderTimeframe.bind(this)}
-              /* onAfterChange={this.updateSliderTimeframe(value)} */
             />
           </div>
           <div>
             <h3>Articles</h3>
             <ListGroup variant="flush">
-              <ListGroup.Item active={false}>
+              <ListGroup.Item
+                action
+                active={this.listItemActive(0)}
+              >
                 <Link
                   to={`/article/${countryInfo[1][0].articleId}`}
                   className="articles-list"
@@ -151,7 +161,10 @@ class Country extends React.Component {
                   {countryInfo[1][0].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item active={false}>
+              <ListGroup.Item
+                action
+                active={this.listItemActive(1)}
+              >
                 <Link
                   to={`/article/${countryInfo[1][1].articleId}`}
                   className="articles-list"
@@ -159,7 +172,10 @@ class Country extends React.Component {
                   {countryInfo[1][1].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item active={true}>
+              <ListGroup.Item
+                action
+                active={this.listItemActive(2)}
+              >
                 <Link
                   to={`/article/${countryInfo[1][2].articleId}`}
                   className="articles-list"
@@ -167,7 +183,10 @@ class Country extends React.Component {
                   {countryInfo[1][2].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item active={false}>
+              <ListGroup.Item
+                action
+                active={this.listItemActive(3)}
+              >
                 <Link
                   to={`/article/${countryInfo[1][3].articleId}`}
                   className="articles-list"
@@ -175,7 +194,10 @@ class Country extends React.Component {
                   {countryInfo[1][3].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item active={false}>
+              <ListGroup.Item
+                action
+                active={this.listItemActive(4)}
+              >
                 <Link
                   to={`/article/${countryInfo[1][4].articleId}`}
                   className="articles-list"
