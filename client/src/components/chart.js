@@ -32,7 +32,6 @@ class Chart extends Component {
   }
 
   componentDidMount() {
-    console.log("hi");
     // Should be this.props.location.pathname
     fetch(`/country/${this.state.countryId}`)
       .then(response => response.json())
