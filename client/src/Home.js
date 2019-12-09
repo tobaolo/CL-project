@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
+import Alert from "react-bootstrap/Alert";
 import Image from "react-bootstrap/Image";
 import { Link } from "react-router-dom";
 import {
@@ -146,18 +148,16 @@ function Map() {
   
   return (
     <React.Fragment>
-      <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} >
+      <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} mapTypeId="hybrid">
       { countryInfo.map(x => {
         if (angloAfrica.indexOf(x['name']) >=0) {
           console.log(countryID[x['name']])
           return (
               <Polygon
-                onClick={ () => {
+                onlClick={ () => {
                   (window.location.pathname =  `/country/${countryID[x['name']] 
                 }`)
-                } 
-                }
-                
+                }}
                 path={ x['latlng'] }
                 geodesic={true}
                 options={{
@@ -167,8 +167,6 @@ function Map() {
                   fillColor: "#25ff27"
                 }}
                 key = {x['name']}
-                
-                
               />
 
             )
@@ -184,59 +182,55 @@ function Map() {
                 fillColor: "#ff2527"
               }}
               key = {x['name']}
-              
             />
-            
             )}
-      }
-        
-    )} 
-    {selectedCountry && (
-              <InfoWindow 
-              position = {{
-                lat: 14,
-                lng: 4
-              }}>
-                <div>{setSelectedCountry}</div>
-              </InfoWindow>
-    )}
-    </GoogleMap>
-    </React.Fragment>
-  );
-}
+      
+            })}
+  
+        </GoogleMap>
+        </React.Fragment>
+      );
+    }
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      isHovering: false,
-      country: ""
+      loading: true
     };
   }
 
   componentDidMount() {
-    
+    this.setState({loading: false})
   }
 
   render() {
-    return (
-      <React.Fragment>
-        <div style={{ width: "100vw", height: "50vw" }}>
-          <WrappedMap
-            googleMapURL={
-              "https://maps.googleapis.com/maps/api/js?key=AIzaSyB45a2xoq_9DskmFsrLCMQFmXdsH2ycufc&libraries=gemoetry,drawing,places"
-            }
-            loadingElement={<div style={{ height: "100%" }} />}
-            containerElement={<div style={{ height: "100%" }} />}
-            mapElement={<div style={{ height: "100%" }} />}
-          />
+    const { loading } = this.state;
+    if (loading) {
+      return (
+        <div className="text-center">
+          <Spinner animation="border" variant="warning" className="mx-auto" />
         </div>
-        
-        {this.state.isHovering && <CountryHover />}
-        <div className="slider">Slider goes here</div>
-      </React.Fragment>
-    );
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <div style={{ width: "100vw", height: "50vw" }}>
+            <WrappedMap
+              googleMapURL={
+                "https://maps.googleapis.com/maps/api/js?key=AIzaSyB45a2xoq_9DskmFsrLCMQFmXdsH2ycufc&libraries=gemoetry,drawing,places"
+              }
+              loadingElement={<div style={{ height: "100%" }} />}
+              containerElement={<div style={{ height: "100%" }} />}
+              mapElement={<div style={{ height: "100%" }} />}
+            />
+          </div>
+          
+          {this.state.isHovering && <CountryHover />}
+          <div className="slider">Slider goes here</div>
+        </React.Fragment>
+      );
+    }
   }
 }
 
