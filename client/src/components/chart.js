@@ -7,7 +7,6 @@ class Chart extends Component {
     super(props);
     this.state = {
       loading: true,
-      countryId: 1,
       countryInfo: [],
       population: { label: "Population", data: [] },
       lifeExpectancy: { label: "Life Expectancy", data: [] },
@@ -32,10 +31,12 @@ class Chart extends Component {
   }
 
   componentDidMount() {
-    // Should be this.props.location.pathname
-    fetch(`/country/${this.state.countryId}`)
+    fetch(window.location.pathname)
       .then(response => response.json())
-      .then(countryInfo => this.setState({ countryInfo, loading: false }))
+      .then(data => {
+        this.setState({ countryInfo: data, loading: false });
+        // this.dataHandler(this.state.countryInfo);
+      })
       .catch(error => console.log(error));
   }
 
