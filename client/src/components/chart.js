@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import Spinner from "react-bootstrap/Spinner";
 
-class Chart extends Component {
+class LineChart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,9 +31,8 @@ class Chart extends Component {
   }
 
   componentDidMount() {
-    console.log("hi");
     // Should be this.props.location.pathname
-    fetch(`/country/${this.state.countryId}`)
+    fetch(`/country/${this.countryId}`)
       .then(response => response.json())
       .then(data =>
         data[1].forEach(data => {
@@ -51,9 +50,19 @@ class Chart extends Component {
           sentiment.push(data.sentiment);
           subjectivity.push(data.subjectivity);
           enrollment.push(data.enrollment);
-          this.setState({ population: { data: population } });
           this.setState({
-            childLaborPercentage: { data: childLaborPercentage }
+            population: {
+              label: "Population",
+              data: population,
+              backgroundColor: "rgba(255,99,132,0.6)"
+            }
+          });
+          this.setState({
+            childLaborPercentage: {
+              label: "Child Labor Percentage",
+              data: childLaborPercentage,
+              backgroundColor: "rgba(255,159,64,0.6)"
+            }
           });
           this.setState({
             readingLevel: {
@@ -186,24 +195,23 @@ class Chart extends Component {
         <div id="chartdata">
           <Line
             data={{
-              datasets: this.chartDataBuilder(["lifeExpectancy", "enrollment"]),
-              labels: ["1995", "2000", "2005", "2010", "2015 to Present"],
-              backgroundColor: [
-                "rgba(255,99,132,0.6)",
-                "rgba(54,162,235,0.6)",
-                "rgba(255,206,86,0.6)",
-                "rgba(75,192,192,0.6)",
-                "rgba(153,102,255,0.6)"
-              ]
+              datasets: this.chartDataBuilder(["childLaborPercentage"]),
+              labels: ["1995", "2000", "2005", "2010", "2015 to Present"]
             }}
             options={{
               maintainAspectRatio: true
             }}
           />
+          <Line
+            data={{
+              datasets: this.chartDataBuilder(["sentiment", "subjectivity"]),
+              labels: ["1995", "2000", "2005", "2010", "2015 to Present"]
+            }}
+          ></Line>
         </div>
       );
     }
   }
 }
 
-export default Chart;
+export default LineChart;
