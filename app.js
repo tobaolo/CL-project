@@ -48,6 +48,8 @@ app.get("/country/:id", (req, res) => {
                     snapshots.LifeExpectancyAtBirth AS lifeExp,
                     snapshots.SchoolEnrollmentprimary AS enrollment,
                     snapshots.ChildLaborPercent AS cLabor,
+                    snapshots.AgeMin AS minAge,
+                    snapshots.AgeMax AS maxAge,
                     articles.title AS articleTitle,
                     articles.timeframe AS timeframe,
                     articles.id AS articleId

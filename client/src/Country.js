@@ -123,6 +123,11 @@ class Country extends React.Component {
                       )}
                     />
                   </Jumbotron>
+                  <div>
+                    Percentage of children, ages{" "}
+                    {countryInfo[1][timeframe].minAge} to{" "}
+                    {countryInfo[1][timeframe].maxAge}, in labor
+                  </div>
                 </Col>
                 <Col>
                   <Image src={countryInfo[0].Image} className="country-map" />
@@ -150,10 +155,7 @@ class Country extends React.Component {
           <div>
             <h3>Articles</h3>
             <ListGroup variant="flush">
-              <ListGroup.Item
-                action
-                active={this.listItemActive(0)}
-              >
+              <ListGroup.Item action active={this.listItemActive(0)}>
                 <Link
                   to={`/article/${countryInfo[1][0].articleId}`}
                   className="articles-list"
@@ -161,10 +163,7 @@ class Country extends React.Component {
                   {countryInfo[1][0].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item
-                action
-                active={this.listItemActive(1)}
-              >
+              <ListGroup.Item action active={this.listItemActive(1)}>
                 <Link
                   to={`/article/${countryInfo[1][1].articleId}`}
                   className="articles-list"
@@ -172,10 +171,7 @@ class Country extends React.Component {
                   {countryInfo[1][1].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item
-                action
-                active={this.listItemActive(2)}
-              >
+              <ListGroup.Item action active={this.listItemActive(2)}>
                 <Link
                   to={`/article/${countryInfo[1][2].articleId}`}
                   className="articles-list"
@@ -183,10 +179,7 @@ class Country extends React.Component {
                   {countryInfo[1][2].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item
-                action
-                active={this.listItemActive(3)}
-              >
+              <ListGroup.Item action active={this.listItemActive(3)}>
                 <Link
                   to={`/article/${countryInfo[1][3].articleId}`}
                   className="articles-list"
@@ -194,10 +187,7 @@ class Country extends React.Component {
                   {countryInfo[1][3].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item
-                action
-                active={this.listItemActive(4)}
-              >
+              <ListGroup.Item action active={this.listItemActive(4)}>
                 <Link
                   to={`/article/${countryInfo[1][4].articleId}`}
                   className="articles-list"
