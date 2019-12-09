@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState }  from "react";
 
 // Importing CSS
 import "./styles.css";
@@ -12,11 +12,58 @@ import {
   GoogleMap,
   withScriptjs,
   withGoogleMap,
-  OverlayView,
-  Polygon
+  Polygon,
+  InfoWindow,
 } from "react-google-maps";
 
 const WrappedMap = withScriptjs(withGoogleMap(Map));
+
+var boundary = require("./mygeodata/ne_10m_admin_0_countries.json")
+console.log(boundary)
+var boundsArray = []
+var tempArr = []
+var countries = []
+var countryInfo = []
+
+const westAfrica = [
+  'Benin', 
+  'Burkina Faso', 
+  'Cameroon', 
+  'Cape Verde', 
+  'Chad', 
+  'Ivory Coast', 
+  'Equatorial Guinea', 
+  'The Gambia', 
+  'Ghana', 
+  'Guinea', 
+  'Guinea-Bissau', 
+  'Liberia', 
+  'Mali', 
+  'Mauritania', 
+  'Niger', 
+  'Nigeria', 
+  'Senegal', 
+  'Sierra Leone',
+  'Togo'
+]
+
+const angloAfrica = [
+  'Cameroon',
+  'The Gambia',
+  'Ghana',
+  'Liberia',
+  'Nigeria',
+  'Sierra Leone'
+]
+
+const countryID = {
+  'Cameroon': 1, 
+  'The Gambia': 2, 
+  'Ghana': 3, 
+  'Liberia': 4, 
+  'Nigeria': 5, 
+  'Sierra Leone': 6
+}
 
 function CountryHover() {
   const [show, setShow] = React.useState(true);
@@ -50,28 +97,105 @@ function CountryHover() {
 }
 
 function Map() {
-  // Define the LatLng coordinates for the polygon's path.
-  var triangleCoords = [
-    { lat: 14, lng: 4 },
-    { lat: 14, lng: 3 },
-    { lat: 15, lng: 4 },
-    { lat: 15, lng: 3 }
-  ];
+  
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
+ 
+
+  for (var i = 0; i < boundary['features'].length; i++) {
+    if (westAfrica.indexOf(boundary['features'][i]['properties']['NAME_EN']) >= 0) {
+      tempArr.push(boundary['features'][i]['geometry']['coordinates'])
+      countries.push(boundary['features'][i]['properties']['NAME_EN'])
+    }
+  }
+  console.log(tempArr)
+  
+  tempArr.forEach(arr => {
+    var countryArr = []
+    if (arr.length === 1) {
+      
+      arr.forEach(row => {
+        row.forEach(coord => {
+          countryArr.push({"lat": coord[1], "lng": coord[0]})
+        })
+      })
+    } else {
+      arr.forEach(singular => {
+        
+        singular.forEach(row => {
+          row.forEach(coord => {
+            countryArr.push({"lat": coord[1], "lng": coord[0]})
+        })
+      })
+      })
+      
+    }
+    boundsArray.push(countryArr)
+    
+  })
+  console.log(boundsArray)
+  console.log(countries)
+  var cnt = 0
+  countries.forEach(country => {
+    countryInfo.push({"name": country, "latlng": boundsArray[cnt]})
+    cnt += 1
+  })
+  console.log(countryInfo)
+  
+  // Define the LatLng coordinates for the polygon's path.
+  
   return (
     <React.Fragment>
-      <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} />
-      <Polygon
-        path={triangleCoords}
-        geodesic={true}
-        options={{
-          strokeColor: "#ff2527",
-          strokeOpacity: 0.75,
-          strokeWeight: 2,
-          fillColor: "#ff2527"
-        }}
-      />
-      <OverlayView position={{ lat: 14, lng: 4 }} />
+      <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} >
+      { countryInfo.map(x => {
+        if (angloAfrica.indexOf(x['name']) >=0) {
+          return (
+
+            <Link key={`link${countryID[x['name']]}` } to={`/country/${countryID[x['name']]}`}>
+              <Polygon
+                path={ x['latlng'] }
+                geodesic={true}
+                options={{
+                  strokeColor: "#ff2527",
+                  strokeOpacity: 1,
+                  strokeWeight: 0,
+                  fillColor: "#25ff27"
+                }}
+                key = {x['name']}
+
+                
+              ></Polygon>
+            </Link> 
+            )
+        } else {
+          return (
+            <Polygon
+              path={ x['latlng'] }
+              geodesic={true}
+              options={{
+                strokeColor: "#ff2527",
+                strokeOpacity: 1,
+                strokeWeight: 0,
+                fillColor: "#ff2527"
+              }}
+              key = {x['name']}
+              
+            />
+            
+            )}
+      }
+        
+    )} 
+    {selectedCountry && (
+              <InfoWindow 
+              position = {{
+                lat: 14,
+                lng: 4
+              }}>
+                <div>{setSelectedCountry}</div>
+              </InfoWindow>
+    )}
+    </GoogleMap>
     </React.Fragment>
   );
 }
@@ -81,13 +205,17 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      isHovering: false
+      isHovering: false,
+      country: ""
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    
+  }
 
-  handleMouseHover() {
+  handleMouseHover(country) {
+
     this.setState(this.toggleHoverState);
   }
 
@@ -103,7 +231,7 @@ class Home extends React.Component {
         <div style={{ width: "100vw", height: "50vw" }}>
           <WrappedMap
             googleMapURL={
-              "https://maps.googleapis.com/maps/api/js?key=AIzaSyB45a2xoq_9DskmFsrLCMQFmXdsH2ycufc&libraries=gemoetry,drawing,places&callback=initMap"
+              "https://maps.googleapis.com/maps/api/js?key=AIzaSyB45a2xoq_9DskmFsrLCMQFmXdsH2ycufc&libraries=gemoetry,drawing,places"
             }
             loadingElement={<div style={{ height: "100%" }} />}
             containerElement={<div style={{ height: "100%" }} />}
