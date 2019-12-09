@@ -30,6 +30,7 @@ class LineChart extends Component {
   }
 
   componentDidMount() {
+    // Should be this.props.location.pathname
     fetch(window.location.pathname)
       .then(response => response.json())
       .then(data => {
@@ -200,12 +201,22 @@ class LineChart extends Component {
             options={{
               maintainAspectRatio: true
             }}
-          />
+          ></Line>
           <Line
             data={{
               datasets: this.chartDataBuilder(["sentiment", "subjectivity"]),
               labels: ["1995", "2000", "2005", "2010", "2015 to Present"]
             }}
+            options={{
+              maintainAspectRatio: true
+            }}
+          ></Line>
+          <Line
+            data={{
+              datasets: this.chartDataBuilder(["enrollment", "readingLevel"]),
+              labels: ["1995", "2000", "2005", "2010", "2015 to Present"]
+            }}
+            options={{ maintainAspectRatio: true }}
           ></Line>
         </div>
       );
