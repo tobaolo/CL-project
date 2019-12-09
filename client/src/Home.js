@@ -15,7 +15,7 @@ import {
   Polygon,
 } from "react-google-maps";
 
-const WrappedMap = withScriptjs(withGoogleMap(Map));
+const WrappedMap = withScriptjs(withGoogleMap(renderMap));
 
 var boundary = require("./mygeodata/ne_10m_admin_0_countries.json")
 var boundsArray = []
@@ -63,7 +63,7 @@ const countryID = {
   'Sierra Leone': 6
 }
 
-function Map() {
+function renderMap() {
 
   for (var i = 0; i < boundary['features'].length; i++) {
     if (westAfrica.indexOf(boundary['features'][i]['properties']['NAME_EN']) >= 0) {
