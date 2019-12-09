@@ -13,13 +13,14 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import ListGroup from "react-bootstrap/ListGroup";
 import Spinner from "react-bootstrap/Spinner";
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import Jumbotron from 'react-bootstrap/Jumbotron';
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Jumbotron from "react-bootstrap/Jumbotron";
+
+import Chart from "./components/chart";
 
 import { Link } from "react-router-dom";
 
 import Slider from "rc-slider";
-
 
 class PercentImage extends React.Component {
   constructor(props) {
@@ -58,7 +59,7 @@ class Country extends React.Component {
     this.state = {
       countryInfo: [],
       loading: true,
-      timeframe: {value: 4},
+      timeframe: { value: 4 },
       countryId: 5
     };
     this.listItemActive = this.listItemActive.bind(this);
@@ -73,7 +74,7 @@ class Country extends React.Component {
   }
 
   updateSliderTimeframe(value) {
-    this.setState({timeframe: {value}});
+    this.setState({ timeframe: { value } });
   }
 
   listItemActive(eventKey) {
@@ -83,12 +84,18 @@ class Country extends React.Component {
     return false;
   }
 
-
   render() {
     const { countryInfo, loading } = this.state;
+    console.log(countryInfo);
     const timeframe = this.state.timeframe.value;
 
-    const wrapperStyle = { width: "80vw", margin: "2rem", display: "block", "marginLeft": "auto", "marginRight": "auto" };
+    const wrapperStyle = {
+      width: "80vw",
+      margin: "2rem",
+      display: "block",
+      marginLeft: "auto",
+      marginRight: "auto"
+    };
 
     if (loading) {
       return (
@@ -147,13 +154,11 @@ class Country extends React.Component {
               onChange={this.updateSliderTimeframe.bind(this)}
             />
           </div>
+          <Chart></Chart>
           <div>
             <h3>Articles</h3>
             <ListGroup variant="flush">
-              <ListGroup.Item
-                action
-                active={this.listItemActive(0)}
-              >
+              <ListGroup.Item action active={this.listItemActive(0)}>
                 <Link
                   to={`/article/${countryInfo[1][0].articleId}`}
                   className="articles-list"
@@ -161,10 +166,7 @@ class Country extends React.Component {
                   {countryInfo[1][0].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item
-                action
-                active={this.listItemActive(1)}
-              >
+              <ListGroup.Item action active={this.listItemActive(1)}>
                 <Link
                   to={`/article/${countryInfo[1][1].articleId}`}
                   className="articles-list"
@@ -172,10 +174,7 @@ class Country extends React.Component {
                   {countryInfo[1][1].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item
-                action
-                active={this.listItemActive(2)}
-              >
+              <ListGroup.Item action active={this.listItemActive(2)}>
                 <Link
                   to={`/article/${countryInfo[1][2].articleId}`}
                   className="articles-list"
@@ -183,10 +182,7 @@ class Country extends React.Component {
                   {countryInfo[1][2].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item
-                action
-                active={this.listItemActive(3)}
-              >
+              <ListGroup.Item action active={this.listItemActive(3)}>
                 <Link
                   to={`/article/${countryInfo[1][3].articleId}`}
                   className="articles-list"
@@ -194,10 +190,7 @@ class Country extends React.Component {
                   {countryInfo[1][3].articleTitle}
                 </Link>
               </ListGroup.Item>
-              <ListGroup.Item
-                action
-                active={this.listItemActive(4)}
-              >
+              <ListGroup.Item action active={this.listItemActive(4)}>
                 <Link
                   to={`/article/${countryInfo[1][4].articleId}`}
                   className="articles-list"
