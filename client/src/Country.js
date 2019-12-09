@@ -158,7 +158,6 @@ class Country extends React.Component {
               onChange={this.updateSliderTimeframe.bind(this)}
             />
           </div>
-          <LineChart />
           <div>
             <h3>Articles</h3>
             <ListGroup variant="flush">
@@ -204,6 +203,7 @@ class Country extends React.Component {
               </ListGroup.Item>
             </ListGroup>
           </div>
+          <LineChart />
         </React.Fragment>
       );
     }

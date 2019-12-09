@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import Spinner from "react-bootstrap/Spinner";
-import Row from "react-bootstrap/Row";
+import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 class BarChart extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class BarChart extends React.Component {
         this.setState({ numChars: data.numChars });
         this.setState({ numSents: data.numSents });
         this.setState({ numWords: data.numWords });
+        this.setState({ loading: false });
       })
       .catch(error => console.log(error));
   }
@@ -52,9 +54,9 @@ class BarChart extends React.Component {
     let data = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i] === termsArray[0]) {
-        data.push(this.state.sentiment);
+        data.push(100 * this.state.sentiment);
       } else if (array[i] === termsArray[1]) {
-        data.push(this.state.subjectivity);
+        data.push(100 * this.state.subjectivity);
       } else if (array[i] === termsArray[2]) {
         data.push(this.state.readingLevel);
       } else if (array[i] === termsArray[3]) {
@@ -87,13 +89,33 @@ class BarChart extends React.Component {
       );
     } else {
       return (
-        <Row>
-          <Col>
+        <Container>
+          <Row>
+            <Col>
+              <h4>Sentiment:</h4>
+              <ul>
+                <li>{this.state.sentiment}</li>
+              </ul>
+            </Col>
+            <Col>
+              <h4>Subjectivity:</h4>
+              <ul>
+                <li>{this.state.subjectivity}</li>
+              </ul>
+            </Col>
+          </Row>
+          <div>
             <Bar
               data={{
                 datasets: [
                   {
-                    label: this.state.title,
+                    backgroundColor: [
+                      "rgba(255,99,132,0.6)",
+                      "rgba(54,162,235,0.6)",
+                      "rgba(255,206,86,0.6)",
+                      "rgba(75,192,192,0.6)",
+                      "rgba(153,102,255,0.6)"
+                    ],
                     data: this.barChartDataBuilder([
                       "avgSentLen",
                       "avgWordLen",
@@ -107,25 +129,10 @@ class BarChart extends React.Component {
                   "Reading Level"
                 ]
               }}
+              options={{ legend: { display: false } }}
             ></Bar>
-          </Col>
-          <Col>
-            <Bar
-              data={{
-                datasets: [
-                  {
-                    label: this.state.title,
-                    data: this.barChartDataBuilder([
-                      "sentiment",
-                      "subjectivity"
-                    ]),
-                    labels: ["Sentiment", "Subjectivity"]
-                  }
-                ]
-              }}
-            ></Bar>
-          </Col>
-        </Row>
+          </div>
+        </Container>
       );
     }
   }
