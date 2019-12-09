@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState }  from "react";
 
 // Importing CSS
 import "./styles.css";
@@ -12,7 +12,8 @@ import {
   GoogleMap,
   withScriptjs,
   withGoogleMap,
-  Polygon
+  Polygon,
+  InfoWindow,
 } from "react-google-maps";
 
 const WrappedMap = withScriptjs(withGoogleMap(Map));
@@ -55,6 +56,15 @@ const angloAfrica = [
   'Sierra Leone'
 ]
 
+const countryID = {
+  'Cameroon': 1, 
+  'The Gambia': 2, 
+  'Ghana': 3, 
+  'Liberia': 4, 
+  'Nigeria': 5, 
+  'Sierra Leone': 6
+}
+
 function CountryHover() {
   const [show, setShow] = React.useState(true);
 
@@ -87,7 +97,10 @@ function CountryHover() {
 }
 
 function Map() {
+  
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
+ 
 
   for (var i = 0; i < boundary['features'].length; i++) {
     if (westAfrica.indexOf(boundary['features'][i]['properties']['NAME_EN']) >= 0) {
@@ -96,7 +109,6 @@ function Map() {
     }
   }
   console.log(tempArr)
-  
   
   tempArr.forEach(arr => {
     var countryArr = []
@@ -132,24 +144,29 @@ function Map() {
   
   // Define the LatLng coordinates for the polygon's path.
   
-
   return (
     <React.Fragment>
-      <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} />
+      <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} >
       { countryInfo.map(x => {
         if (angloAfrica.indexOf(x['name']) >=0) {
           return (
-            <Polygon
-              path={ x['latlng'] }
-              geodesic={true}
-              options={{
-                strokeColor: "#ff2527",
-                strokeOpacity: 1,
-                strokeWeight: 2,
-                fillColor: "#25ff27"
-              }}
-              name = {x['name']}
-            />)
+
+            <Link key={`link${countryID[x['name']]}` } to={`/country/${countryID[x['name']]}`}>
+              <Polygon
+                path={ x['latlng'] }
+                geodesic={true}
+                options={{
+                  strokeColor: "#ff2527",
+                  strokeOpacity: 1,
+                  strokeWeight: 0,
+                  fillColor: "#25ff27"
+                }}
+                key = {x['name']}
+
+                
+              ></Polygon>
+            </Link> 
+            )
         } else {
           return (
             <Polygon
@@ -158,15 +175,27 @@ function Map() {
               options={{
                 strokeColor: "#ff2527",
                 strokeOpacity: 1,
-                strokeWeight: 2,
+                strokeWeight: 0,
                 fillColor: "#ff2527"
               }}
-              name = {x['name']}
-            />)
-        }
-
-        }
+              key = {x['name']}
+              
+            />
+            
+            )}
+      }
+        
     )} 
+    {selectedCountry && (
+              <InfoWindow 
+              position = {{
+                lat: 14,
+                lng: 4
+              }}>
+                <div>{setSelectedCountry}</div>
+              </InfoWindow>
+    )}
+    </GoogleMap>
     </React.Fragment>
   );
 }
@@ -176,7 +205,8 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      isHovering: false
+      isHovering: false,
+      country: ""
     };
   }
 
@@ -184,7 +214,8 @@ class Home extends React.Component {
     
   }
 
-  handleMouseHover() {
+  handleMouseHover(country) {
+
     this.setState(this.toggleHoverState);
   }
 
