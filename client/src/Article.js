@@ -12,6 +12,7 @@ import Image from "react-bootstrap/Image";
 import Spinner from "react-bootstrap/Spinner";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 
+import BarChart from "./components/barchart";
 
 class Article extends React.Component {
   constructor(props) {
@@ -68,32 +69,7 @@ class Article extends React.Component {
               </Col>
             </Row>
             <h2>Charts</h2>
-            <Row>
-              <Col>
-                <Image
-                  src="https://devenwisner.files.wordpress.com/2019/04/overlapping-column-chart-deven-wisner-data-visualization.png?w=990"
-                  className="country-map"
-                />
-              </Col>
-              <Col>
-                <Image
-                  src="https://devenwisner.files.wordpress.com/2019/04/overlapping-column-chart-deven-wisner-data-visualization.png?w=990"
-                  className="country-map"
-                />
-              </Col>
-              <Col>
-                <Image
-                  src="https://devenwisner.files.wordpress.com/2019/04/overlapping-column-chart-deven-wisner-data-visualization.png?w=990"
-                  className="country-map"
-                />
-              </Col>
-              <Col>
-                <Image
-                  src="https://devenwisner.files.wordpress.com/2019/04/overlapping-column-chart-deven-wisner-data-visualization.png?w=990"
-                  className="country-map"
-                />
-              </Col>
-            </Row>
+            <BarChart></BarChart>
           </Container>
         </React.Fragment>
       );

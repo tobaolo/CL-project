@@ -76,14 +76,19 @@ app.get("/article/:id", (req, res) => {
 
   // SQL command to get article info and country map
   let sql = `SELECT articles.title AS title,
+                articles.countryId AS countryId,
                 articles.sentiment AS sentiment,
                 articles.subjectivity AS subjectivity,
-                articles.abstract AS abstract,
                 articles.reading_level AS readingLevel,
-                articles.link AS link,
-                articles.countryId AS countryId,
+                articles.avg_sent_len AS avgSentLen,
+                articles.avg_word_len AS avgWordLen,
+                articles.num_chars AS numChars,
+                articles.num_words AS numWords,
+                articles.num_sents AS numSents,
                 countries.Name AS articleCountry,
-                countries.Image AS countryImage
+                countries.Image AS countryImage,
+                articles.abstract AS abstract,
+                articles.link AS link
                 FROM articles JOIN countries
                 ON articles.countryId = countries.Id
                 WHERE articles.id = ?`;
