@@ -149,10 +149,15 @@ function Map() {
       <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} >
       { countryInfo.map(x => {
         if (angloAfrica.indexOf(x['name']) >=0) {
+          console.log(countryID[x['name']])
           return (
-
-            <Link key={`link${countryID[x['name']]}` } to={`/country/${countryID[x['name']]}`}>
               <Polygon
+                onClick={ () => {
+                  (window.location.pathname =  `/country/${countryID[x['name']] 
+                }`)
+                } 
+                }
+                
                 path={ x['latlng'] }
                 geodesic={true}
                 options={{
@@ -162,10 +167,10 @@ function Map() {
                   fillColor: "#25ff27"
                 }}
                 key = {x['name']}
-
                 
-              ></Polygon>
-            </Link> 
+                
+              />
+
             )
         } else {
           return (
@@ -214,17 +219,6 @@ class Home extends React.Component {
     
   }
 
-  handleMouseHover(country) {
-
-    this.setState(this.toggleHoverState);
-  }
-
-  toggleHoverState(state) {
-    return {
-      isHovering: !state.isHovering
-    };
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -238,18 +232,7 @@ class Home extends React.Component {
             mapElement={<div style={{ height: "100%" }} />}
           />
         </div>
-        <div
-          onMouseEnter={this.handleMouseHover.bind(this)}
-          onMouseLeave={this.handleMouseHover.bind(this)}
-        >
-          <Link to="/country/5">
-            <Image
-              src="https://www.solidaridadnetwork.org/sites/solidaridadnetwork.org/files/west_africa.JPG"
-              alt="This is where our interactive map will go"
-              className="map-pic"
-            />
-          </Link>
-        </div>
+        
         {this.state.isHovering && <CountryHover />}
         <div className="slider">Slider goes here</div>
       </React.Fragment>
