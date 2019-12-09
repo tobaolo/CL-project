@@ -67,7 +67,11 @@ class Country extends React.Component {
 
   componentDidMount() {
     // Should be this.props.location.pathname
+<<<<<<< HEAD
     fetch(window.location.pathname)
+=======
+    fetch(this.props.location.pathname)
+>>>>>>> 5a2a9fbfde60db20c5d816a2c027047cb6891235
       .then(response => response.json())
       .then(countryInfo => this.setState({ countryInfo, loading: false }))
       .catch(error => console.log(error));
