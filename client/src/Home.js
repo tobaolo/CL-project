@@ -88,17 +88,26 @@ function Map() {
   
   
   tempArr.forEach(arr => {
+    var countryArr = []
     if (arr.length === 1) {
-      var countryArr = []
+      
       arr.forEach(row => {
         row.forEach(coord => {
           countryArr.push({"lat": coord[1], "lng": coord[0]})
         })
-        
       })
-      boundsArray.push(countryArr)
+    } else {
+      arr.forEach(singular => {
+        
+        singular.forEach(row => {
+          row.forEach(coord => {
+            countryArr.push({"lat": coord[1], "lng": coord[0]})
+        })
+      })
+      })
+      
     }
-    
+    boundsArray.push(countryArr)
     
   })
   console.log(boundsArray)
