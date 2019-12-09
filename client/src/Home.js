@@ -1,4 +1,4 @@
-import React, { useState }  from "react";
+import React from "react";
 
 // Importing CSS
 import "./styles.css";
@@ -8,14 +8,12 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
-import Image from "react-bootstrap/Image";
 import { Link } from "react-router-dom";
 import {
   GoogleMap,
   withScriptjs,
   withGoogleMap,
   Polygon,
-  InfoWindow,
 } from "react-google-maps";
 
 const WrappedMap = withScriptjs(withGoogleMap(Map));
@@ -99,10 +97,6 @@ function CountryHover() {
 }
 
 function Map() {
-  
-  const [selectedCountry, setSelectedCountry] = useState(null)
-
- 
 
   for (var i = 0; i < boundary['features'].length; i++) {
     if (westAfrica.indexOf(boundary['features'][i]['properties']['NAME_EN']) >= 0) {
@@ -111,11 +105,9 @@ function Map() {
     }
   }
   console.log(tempArr)
-  
   tempArr.forEach(arr => {
     var countryArr = []
     if (arr.length === 1) {
-      
       arr.forEach(row => {
         row.forEach(coord => {
           countryArr.push({"lat": coord[1], "lng": coord[0]})
@@ -123,17 +115,14 @@ function Map() {
       })
     } else {
       arr.forEach(singular => {
-        
         singular.forEach(row => {
           row.forEach(coord => {
             countryArr.push({"lat": coord[1], "lng": coord[0]})
         })
       })
       })
-      
     }
     boundsArray.push(countryArr)
-    
   })
   console.log(boundsArray)
   console.log(countries)
@@ -186,7 +175,6 @@ function Map() {
             )}
       
             })}
-  
         </GoogleMap>
         </React.Fragment>
       );
@@ -202,6 +190,7 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.setState({loading: false})
+    
   }
 
   render() {
@@ -225,9 +214,6 @@ class Home extends React.Component {
               mapElement={<div style={{ height: "100%" }} />}
             />
           </div>
-          
-          {this.state.isHovering && <CountryHover />}
-          <div className="slider">Slider goes here</div>
         </React.Fragment>
       );
     }
