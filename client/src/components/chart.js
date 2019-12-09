@@ -7,7 +7,6 @@ class Chart extends Component {
     super(props);
     this.state = {
       loading: true,
-      countryInfo: [],
       population: { label: "Population", data: [] },
       lifeExpectancy: { label: "Life Expectancy", data: [] },
       childLaborPercentage: { label: "Child Labor Percentage", data: [] },
@@ -31,19 +30,18 @@ class Chart extends Component {
   }
 
   componentDidMount() {
-    let population = this.state.population.data;
-    let lifeExpectancy = this.state.lifeExpectancy.data;
-    let childLaborPercentage = this.state.childLaborPercentage.data;
-    let readingLevel = this.state.readingLevel.data;
-    let sentiment = this.state.sentiment.data;
-    let subjectivity = this.state.subjectivity.data;
-    let enrollment = this.state.enrollment.data;
-
     fetch(window.location.pathname)
       .then(response => response.json())
       .then(data => {
-        
         data[1].forEach(data => {
+          let population = this.state.population.data;
+          let lifeExpectancy = this.state.lifeExpectancy.data;
+          let childLaborPercentage = this.state.childLaborPercentage.data;
+          let readingLevel = this.state.readingLevel.data;
+          let sentiment = this.state.sentiment.data;
+          let subjectivity = this.state.subjectivity.data;
+          let enrollment = this.state.enrollment.data;
+
           population.push(data.population);
           lifeExpectancy.push(data.lifeExp);
           childLaborPercentage.push(data.cLabor);
@@ -51,19 +49,19 @@ class Chart extends Component {
           sentiment.push(data.sentiment);
           subjectivity.push(data.subjectivity);
           enrollment.push(data.enrollment);
-        });
-      })
-      .catch(error => console.log(error));
 
-      this.setState({ population: { data: population } });
-      this.setState({ childLaborPercentage: { data: childLaborPercentage } });
-      this.setState({ readingLevel: { data: readingLevel } });
-      this.setState({ sentiment: { data: sentiment } });
-      this.setState({ subjectivity: { data: subjectivity } });
-      this.setState({ enrollment: { data: enrollment } });
-      this.setState({ lifeExpectancy: { data: lifeExpectancy } });
-
-      
+          this.setState({ population: { data: population } });
+          this.setState({
+            childLaborPercentage: { data: childLaborPercentage }
+          });
+          this.setState({ readingLevel: { data: readingLevel } });
+          this.setState({ sentiment: { data: sentiment } });
+          this.setState({ subjectivity: { data: subjectivity } });
+          this.setState({ enrollment: { data: enrollment } });
+          this.setState({ lifeExpectancy: { data: lifeExpectancy } });
+          this.setState({ loading: false });
+        })
+    })
   }
 
   //input data from dtatbase to state...
