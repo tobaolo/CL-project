@@ -54,11 +54,41 @@ class Chart extends Component {
           this.setState({
             childLaborPercentage: { data: childLaborPercentage }
           });
-          this.setState({ readingLevel: { data: readingLevel } });
-          this.setState({ sentiment: { data: sentiment } });
-          this.setState({ subjectivity: { data: subjectivity } });
-          this.setState({ enrollment: { data: enrollment } });
-          this.setState({ lifeExpectancy: { data: lifeExpectancy } });
+          this.setState({
+            readingLevel: {
+              label: "Reading Level",
+              data: readingLevel,
+              backgroundColor: "rgba(255,99,132,0.6)"
+            }
+          });
+          this.setState({
+            sentiment: {
+              label: "Sentiment",
+              data: sentiment,
+              backgroundColor: "rgba(54,162,235,0.6)"
+            }
+          });
+          this.setState({
+            subjectivity: {
+              label: "Subjectitivity",
+              data: subjectivity,
+              backgroundColor: "rgba(255,206,86,0.6)"
+            }
+          });
+          this.setState({
+            enrollment: {
+              label: "Primary School Enrollment",
+              data: enrollment,
+              backgroundColor: "rgba(75,192,192,0.6)"
+            }
+          });
+          this.setState({
+            lifeExpectancy: {
+              label: "Life Expectancy",
+              data: lifeExpectancy,
+              backgroundColor: "rgba(153,102,255,0.6)"
+            }
+          });
           this.setState({ loading: false });
         })
     })
@@ -106,6 +136,7 @@ class Chart extends Component {
 
   //to be used in props to establish what chartdata will be on the line graphs
   chartDataBuilder(array) {
+    console.log("test", this.state.lifeExpectancy);
     let termsArray = [
       "population",
       "lifeExpectancy",
@@ -154,11 +185,7 @@ class Chart extends Component {
         <div id="chartdata">
           <Line
             data={{
-              datasets: this.chartDataBuilder([
-                "childLaborPercentage",
-                "readingLevel",
-                "enrollment"
-              ]),
+              datasets: this.chartDataBuilder(["lifeExpectancy", "enrollment"]),
               labels: ["1995", "2000", "2005", "2010", "2015 to Present"],
               backgroundColor: [
                 "rgba(255,99,132,0.6)",
@@ -169,7 +196,7 @@ class Chart extends Component {
               ]
             }}
             options={{
-              maintainAspectRatio: false
+              maintainAspectRatio: true
             }}
           />
         </div>
