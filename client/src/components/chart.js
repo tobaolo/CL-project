@@ -5,6 +5,7 @@ class Chart extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      countryId: 1,
       countryInfo: [],
       population: { label: "Population", data: [] },
       lifeExpectancy: { label: "Life Expectancy", data: [] },
@@ -28,6 +29,15 @@ class Chart extends Component {
     };
   }
 
+  componentDidMount() {
+    // Should be this.props.location.pathname
+    fetch(`/country/${this.state.countryId}`)
+      .then(response => response.json())
+      .then(countryInfo => this.setState({ countryInfo, loading: false }))
+      .catch(error => console.log(error));
+    console.log("Country info here!");
+    console.log(this.state.countryInfo);
+  }
   //input data from dtatbase to state...
   dataHandler(countryInfo) {
     console.log("THIS SHOULD BE OCCUPIED", countryInfo);
@@ -87,7 +97,7 @@ class Chart extends Component {
   }
 
   render() {
-    console.log(this.statecountryInfo);
+    console.log(this.state.countryInfo);
     return (
       <div id="chartdata">
         <Line
