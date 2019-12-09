@@ -7,7 +7,6 @@ class LineChart extends Component {
     super(props);
     this.state = {
       loading: true,
-      countryId: 1,
       population: { label: "Population", data: [] },
       lifeExpectancy: { label: "Life Expectancy", data: [] },
       childLaborPercentage: { label: "Child Labor Percentage", data: [] },
@@ -34,7 +33,7 @@ class LineChart extends Component {
     // Should be this.props.location.pathname
     fetch(window.location.pathname)
       .then(response => response.json())
-      .then(data =>
+      .then(data => {
         data[1].forEach(data => {
           let population = this.state.population.data;
           let lifeExpectancy = this.state.lifeExpectancy.data;
@@ -43,6 +42,7 @@ class LineChart extends Component {
           let sentiment = this.state.sentiment.data;
           let subjectivity = this.state.subjectivity.data;
           let enrollment = this.state.enrollment.data;
+
           population.push(data.population);
           lifeExpectancy.push(data.lifeExp);
           childLaborPercentage.push(data.cLabor);
@@ -101,8 +101,7 @@ class LineChart extends Component {
           });
           this.setState({ loading: false });
         })
-      )
-      .catch(error => console.log(error));
+    })
   }
 
   //input data from dtatbase to state...
@@ -191,6 +190,7 @@ class LineChart extends Component {
     } else {
       console.log("Country data", this.state.countryInfo);
       console.log("Random check", this.state.childLaborPercentage);
+      console.log("State", this.state);
       return (
         <div id="chartdata">
           <Line

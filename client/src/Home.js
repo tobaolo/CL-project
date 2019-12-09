@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Importing CSS
 import "./styles.css";
@@ -12,114 +12,219 @@ import {
   GoogleMap,
   withScriptjs,
   withGoogleMap,
-  Polygon,
+  Polygon
 } from "react-google-maps";
 
 const WrappedMap = withScriptjs(withGoogleMap(renderMap));
 
-var boundary = require("./mygeodata/ne_10m_admin_0_countries.json")
-var boundsArray = []
-var tempArr = []
-var countries = []
-var countryInfo = []
+var boundary = require("./mygeodata/ne_10m_admin_0_countries.json");
+var boundsArray = [];
+var tempArr = [];
+var countries = [];
+var countryInfo = [];
 
 const westAfrica = [
-  'Benin', 
-  'Burkina Faso', 
-  'Cameroon', 
-  'Cape Verde', 
-  'Chad', 
-  'Ivory Coast', 
-  'Equatorial Guinea', 
-  'The Gambia', 
-  'Ghana', 
-  'Guinea', 
-  'Guinea-Bissau', 
-  'Liberia', 
-  'Mali', 
-  'Mauritania', 
-  'Niger', 
-  'Nigeria', 
-  'Senegal', 
-  'Sierra Leone',
-  'Togo'
-]
+  "Benin",
+  "Burkina Faso",
+  "Cameroon",
+  "Cape Verde",
+  "Chad",
+  "Ivory Coast",
+  "Equatorial Guinea",
+  "The Gambia",
+  "Ghana",
+  "Guinea",
+  "Guinea-Bissau",
+  "Liberia",
+  "Mali",
+  "Mauritania",
+  "Niger",
+  "Nigeria",
+  "Senegal",
+  "Sierra Leone",
+  "Togo"
+];
 
 const angloAfrica = [
-  'Cameroon',
-  'The Gambia',
-  'Ghana',
-  'Liberia',
-  'Nigeria',
-  'Sierra Leone'
-]
+  "Cameroon",
+  "The Gambia",
+  "Ghana",
+  "Liberia",
+  "Nigeria",
+  "Sierra Leone"
+];
 
 const countryID = {
-  'Cameroon': 1, 
-  'The Gambia': 2, 
-  'Ghana': 3, 
-  'Liberia': 4, 
-  'Nigeria': 5, 
-  'Sierra Leone': 6
-}
+  Cameroon: 1,
+  "The Gambia": 2,
+  Ghana: 3,
+  Liberia: 4,
+  Nigeria: 5,
+  "Sierra Leone": 6
+};
 
 function renderMap() {
 
-  for (var i = 0; i < boundary['features'].length; i++) {
-    if (westAfrica.indexOf(boundary['features'][i]['properties']['NAME_EN']) >= 0) {
-      tempArr.push(boundary['features'][i]['geometry']['coordinates'])
-      countries.push(boundary['features'][i]['properties']['NAME_EN'])
+  for (var i = 0; i < boundary["features"].length; i++) {
+    if (
+      westAfrica.indexOf(boundary["features"][i]["properties"]["NAME_EN"]) >= 0
+    ) {
+      tempArr.push(boundary["features"][i]["geometry"]["coordinates"]);
+      countries.push(boundary["features"][i]["properties"]["NAME_EN"]);
     }
   }
+  console.log(tempArr);
+
   tempArr.forEach(arr => {
-    var countryArr = []
+    var countryArr = [];
     if (arr.length === 1) {
       arr.forEach(row => {
         row.forEach(coord => {
-          countryArr.push({"lat": coord[1], "lng": coord[0]})
-        })
-      })
+          countryArr.push({ lat: coord[1], lng: coord[0] });
+        });
+      });
     } else {
       arr.forEach(singular => {
         singular.forEach(row => {
           row.forEach(coord => {
-            countryArr.push({"lat": coord[1], "lng": coord[0]})
-        })
-      })
-      })
+            countryArr.push({ lat: coord[1], lng: coord[0] });
+          });
+        });
+      });
     }
-    boundsArray.push(countryArr)
-  })
-  var cnt = 0
+    boundsArray.push(countryArr);
+  });
+  console.log(boundsArray);
+  console.log(countries);
+  var cnt = 0;
   countries.forEach(country => {
-    countryInfo.push({"name": country, "latlng": boundsArray[cnt]})
-    cnt += 1
-  })
-  
+    countryInfo.push({ name: country, latlng: boundsArray[cnt] });
+    cnt += 1;
+  });
+  console.log(countryInfo);
+
   // Define the LatLng coordinates for the polygon's path.
   return (
     <React.Fragment>
-      <GoogleMap defaultZoom={5.5} defaultCenter={{ lat: 9, lng: 4 }} mapTypeId="hybrid">
-        { countryInfo.map(x => {
-          if (angloAfrica.indexOf(x['name']) >=0) {
+      <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }}>
+        {countryInfo.map(x => {
+          if (angloAfrica.indexOf(x["name"]) >= 0) {
+            console.log("countryID[x['name']]:", countryID[x["name"]]);
             return (
+              <Link
+                key={`link${countryID[x["name"]]}`}
+                to={`/country/${countryID[x["name"]]}`}
+              >
                 <Polygon
-                  onClick={ () => {
-                    (window.location.pathname =  `/country/${countryID[x['name']] 
-                  }`)
-                  }}
-                  path={ x['latlng'] }
+                  path={x["latlng"]}
                   geodesic={true}
                   options={{
                     strokeColor: "#ff2527",
                     strokeOpacity: 1,
                     strokeWeight: 0,
-                    fillColor: "#ff25ff"
+                    fillColor: "#25ff27"
                   }}
-                  key = {x['name']}
+                  key={x["name"]}
+                  onClick={() => {
+                    window.location.pathname = `/country/${
+                      countryID[x["name"]]
+                    }`;
+                  }}
                 />
-              )
-          } 
+              </Link>
+            );
+          } else {
+            return (
+              <Polygon
+                path={x["latlng"]}
+                geodesic={true}
+                options={{
+                  strokeColor: "#ff2527",
+                  strokeOpacity: 1,
+                  strokeWeight: 0,
+                  fillColor: "#ff2527"
+                }}
+                key={x["name"]}
+              />
+            );
+          }
+        })}
+        {/* {selectedCountry && (
+          <InfoWindow
+            position={{
+              lat: 14,
+              lng: 4
+            }}
+          >
+            <div>{setSelectedCountry}</div>
+          </InfoWindow>
+        )} */}
+      </GoogleMap>
+    </React.Fragment>
+  );
+}
+
+function renderMap() {
+  for (var i = 0; i < boundary["features"].length; i++) {
+    if (
+      westAfrica.indexOf(boundary["features"][i]["properties"]["NAME_EN"]) >= 0
+    ) {
+      tempArr.push(boundary["features"][i]["geometry"]["coordinates"]);
+      countries.push(boundary["features"][i]["properties"]["NAME_EN"]);
+    }
+  }
+  tempArr.forEach(arr => {
+    var countryArr = [];
+    if (arr.length === 1) {
+      arr.forEach(row => {
+        row.forEach(coord => {
+          countryArr.push({ lat: coord[1], lng: coord[0] });
+        });
+      });
+    } else {
+      arr.forEach(singular => {
+        singular.forEach(row => {
+          row.forEach(coord => {
+            countryArr.push({ lat: coord[1], lng: coord[0] });
+          });
+        });
+      });
+    }
+    boundsArray.push(countryArr);
+  });
+  var cnt = 0;
+  countries.forEach(country => {
+    countryInfo.push({ name: country, latlng: boundsArray[cnt] });
+    cnt += 1;
+  });
+
+  // Define the LatLng coordinates for the polygon's path.
+  return (
+    <React.Fragment>
+      <GoogleMap
+        defaultZoom={5.5}
+        defaultCenter={{ lat: 9, lng: 4 }}
+        mapTypeId="hybrid"
+      >
+        {countryInfo.map(x => {
+          if (angloAfrica.indexOf(x["name"]) >= 0) {
+            return (
+              <Polygon
+                onClick={() => {
+                  window.location.pathname = `/country/${countryID[x["name"]]}`;
+                }}
+                path={x["latlng"]}
+                geodesic={true}
+                options={{
+                  strokeColor: "#ff2527",
+                  strokeOpacity: 1,
+                  strokeWeight: 0,
+                  fillColor: "#ff25ff"
+                }}
+                key={x["name"]}
+              />
+            );
+          }
         })}
       </GoogleMap>
     </React.Fragment>
@@ -135,7 +240,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({loading: false})
+    this.setState({ loading: false });
   }
 
   render() {

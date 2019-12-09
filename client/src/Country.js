@@ -86,7 +86,6 @@ class Country extends React.Component {
 
   render() {
     const { countryInfo, loading } = this.state;
-    console.log(countryInfo);
     const timeframe = this.state.timeframe.value;
 
     const wrapperStyle = {
@@ -159,7 +158,6 @@ class Country extends React.Component {
               onChange={this.updateSliderTimeframe.bind(this)}
             />
           </div>
-          <LineChart />
           <div>
             <h3>Articles</h3>
             <ListGroup variant="flush">
@@ -205,6 +203,7 @@ class Country extends React.Component {
               </ListGroup.Item>
             </ListGroup>
           </div>
+          <LineChart />
         </React.Fragment>
       );
     }
