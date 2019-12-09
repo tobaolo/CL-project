@@ -14,7 +14,7 @@ class Chart extends Component {
       readingLevel: { label: "Reading Level", data: [] },
       sentiment: { label: "Sentiment", data: [] },
       subjectivity: { label: "Subjectivity", data: [] },
-      enrollment: { label: "Primary School Enrollment", data: {} },
+      enrollment: { label: "Primary School Enrollment", data: [] },
 
       chartData: {
         labels: ["1995", "2000", "2005", "2010", "2015 to Present"],
@@ -31,13 +31,39 @@ class Chart extends Component {
   }
 
   componentDidMount() {
+    let population = this.state.population.data;
+    let lifeExpectancy = this.state.lifeExpectancy.data;
+    let childLaborPercentage = this.state.childLaborPercentage.data;
+    let readingLevel = this.state.readingLevel.data;
+    let sentiment = this.state.sentiment.data;
+    let subjectivity = this.state.subjectivity.data;
+    let enrollment = this.state.enrollment.data;
+
     fetch(window.location.pathname)
       .then(response => response.json())
       .then(data => {
-        this.setState({ countryInfo: data, loading: false });
-        // this.dataHandler(this.state.countryInfo);
+        
+        data[1].forEach(data => {
+          population.push(data.population);
+          lifeExpectancy.push(data.lifeExp);
+          childLaborPercentage.push(data.cLabor);
+          readingLevel.push(data.readingLevel);
+          sentiment.push(data.sentiment);
+          subjectivity.push(data.subjectivity);
+          enrollment.push(data.enrollment);
+        });
       })
       .catch(error => console.log(error));
+
+      this.setState({ population: { data: population } });
+      this.setState({ childLaborPercentage: { data: childLaborPercentage } });
+      this.setState({ readingLevel: { data: readingLevel } });
+      this.setState({ sentiment: { data: sentiment } });
+      this.setState({ subjectivity: { data: subjectivity } });
+      this.setState({ enrollment: { data: enrollment } });
+      this.setState({ lifeExpectancy: { data: lifeExpectancy } });
+
+      
   }
 
   //input data from dtatbase to state...
@@ -125,6 +151,7 @@ class Chart extends Component {
     } else {
       console.log("Country data", this.state.countryInfo);
       console.log("Random check", this.state.childLaborPercentage);
+      console.log("State", this.state);
       return (
         <div id="chartdata">
           <Line
