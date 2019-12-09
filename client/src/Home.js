@@ -86,12 +86,19 @@ function Map() {
   }
   console.log(tempArr)
   
-  tempArr[1].forEach(arr => {
-    var countryArr = []
-    arr.forEach(coord => {
-      countryArr.push({"lat": coord[1], "lng": coord[0]})
-    })
-    boundsArray.push(countryArr)
+  
+  tempArr.forEach(arr => {
+    if (arr.length === 1) {
+      var countryArr = []
+      arr.forEach(row => {
+        row.forEach(coord => {
+          countryArr.push({"lat": coord[1], "lng": coord[0]})
+        })
+        
+      })
+      boundsArray.push(countryArr)
+    }
+    
     
   })
   console.log(boundsArray)
@@ -102,9 +109,9 @@ function Map() {
   return (
     <React.Fragment>
       <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} />
-      {/* { boundsArray.map(x => {
+      { boundsArray.map(x => {
         return (
-<Polygon
+          <Polygon
             path={ x }
             geodesic={true}
             options={{
@@ -112,27 +119,9 @@ function Map() {
               strokeOpacity: 1,
               strokeWeight: 2,
               fillColor: "#ff2527"
-          }}
-          />) */}
-        )
-      } }
-
-      )
-          <Polygon
-            path={ boundsArray[0] }
-            geodesic={true}
-            options={{
-              strokeColor: "#ff2527",
-              strokeOpacity: 1,
-              strokeWeight: 2,
-              fillColor: "#ff2527"
-          }}
-          />)
-      })
-      }
-      
-        
-      />
+            }}
+          />)}
+    )} 
     </React.Fragment>
   );
 }
