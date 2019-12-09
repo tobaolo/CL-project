@@ -38,39 +38,45 @@ class Chart extends Component {
       .then(response => response.json())
       .then(countryInfo => this.setState({ countryInfo, loading: false }))
       .catch(error => console.log(error));
-    console.log("Country info here!");
-    console.log(this.state.countryInfo);
   }
+
   //input data from dtatbase to state...
   dataHandler(countryInfo) {
-    console.log("THIS SHOULD BE OCCUPIED", countryInfo);
-    var snapshotData = countryInfo[1];
+    let snapshotData = countryInfo[1];
+    console.log(snapshotData);
+    let popS = snapshotData.map(snapshot => snapshot.population);
+    let lifeExpS = snapshotData.map(snapshot => snapshot.lifeExp);
+    let cLabS = snapshotData.map(snapshot => snapshot.cLabor);
+    let readingLvlS = snapshotData.map(snapshot => snapshot.readingLevel);
+    let subjS = snapshotData.map(snapshot => snapshot.subjectivity);
+    let sentS = snapshotData.map(snapshot => snapshot.sentiment);
+    let enrollS = snapshotData.map(snapshot => snapshot.enrollment);
     this.setState({
-      population: { data: snapshotData.map(snapshot => snapshot.population) }
+      population: { data: popS }
     });
     this.setState({
-      lifeExpectancy: { data: snapshotData.map(snapshot => snapshot.lifeExp) }
+      lifeExpectancy: { data: lifeExpS }
     });
     this.setState({
       childLaborPercentage: {
-        data: snapshotData.map(snapshot => snapshot.cLabor)
+        data: cLabS
       }
     });
     this.setState({
       readingLevel: {
-        data: snapshotData.map(snapshot => snapshot.readingLevel)
+        data: readingLvlS
       }
     });
     this.setState({
       subjectivity: {
-        data: snapshotData.map(snapshot => snapshot.subjectivity)
+        data: subjS
       }
     });
     this.setState({
-      sentiment: { data: snapshotData.map(snapshot => snapshot.sentiment) }
+      sentiment: { data: sentS }
     });
     this.setState({
-      enrollment: { data: snapshotData.map(snapshot => snapshot.enrollment) }
+      enrollment: { data: enrollS }
     });
   }
 
@@ -85,17 +91,27 @@ class Chart extends Component {
       "subjectivity",
       "enrollment"
     ];
+    console.log(array);
     let dataset = [];
     for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < termsArray.length; j++) {
-        if (array[i] === termsArray[j]) {
-          console.log(array[i], termsArray[j]);
-          console.log("terms", this.state.termsArray[j]);
-          dataset.push(this.state.termsArray[j]);
-        }
+      console.log("Loop number", i, array[i]);
+      if (array[i] === termsArray[2]) {
+        dataset.push(this.state.childLaborPercentage);
+      } else if (array[i] === termsArray[1]) {
+        dataset.push(this.state.lifeExpectancy);
+      } else if (array[i] === termsArray[0]) {
+        dataset.push(this.state.population);
+      } else if (array[i] === termsArray[3]) {
+        dataset.push(this.state.readingLevel);
+      } else if (array[i] === termsArray[4]) {
+        dataset.push(this.state.sentiment);
+      } else if (array[i] === termsArray[5]) {
+        dataset.push(this.state.subjectivity);
+      } else if (array[i] === termsArray[6]) {
+        dataset.push(this.state.enrollment);
       }
     }
-    console.log(dataset);
+    console.log("Dataset here", dataset);
     return dataset;
   }
 
@@ -107,7 +123,8 @@ class Chart extends Component {
         </div>
       );
     } else {
-      console.log(this.state.countryInfo);
+      console.log("Country data", this.state.countryInfo);
+      console.log("Random check", this.state.childLaborPercentage);
       return (
         <div id="chartdata">
           <Line
