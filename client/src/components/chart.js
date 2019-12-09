@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import Spinner from "react-bootstrap/Spinner";
+import { forEach } from "gl-matrix/src/gl-matrix/vec2";
 
 class Chart extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class Chart extends Component {
       readingLevel: { label: "Reading Level", data: [] },
       sentiment: { label: "Sentiment", data: [] },
       subjectivity: { label: "Subjectivity", data: [] },
-      enrollment: { label: "Primary School Enrollment", data: {} },
+      enrollment: { label: "Primary School Enrollment", data: [] },
 
       chartData: {
         labels: ["1995", "2000", "2005", "2010", "2015 to Present"],
@@ -36,8 +37,33 @@ class Chart extends Component {
     // Should be this.props.location.pathname
     fetch(`/country/${this.state.countryId}`)
       .then(response => response.json())
-      .then(countryInfo => this.setState({ countryInfo, loading: false }))
+      .then(data =>
+        data[1].forEach(data => {
+          var population = this.state.population.data;
+          let lifeExpectancy = this.state.lifeExpectancy.data;
+          let childLaborPercentage = this.state.childLaborPercentage.data;
+          let readingLevel = this.state.readingLevel.data;
+          let sentiment = this.state.sentiment.data;
+          let subjectivity = this.state.subjectivity.data;
+          let enrollment = this.state.enrollment.data;
+          population.push(data.population);
+          lifeExpectancy.push(data.lifeExp);
+          childLaborPercentage.push(data.cLabor);
+          readingLevel.push(data.readingLevel);
+          sentiment.push(data.sentiment);
+          subjectivity.push(data.subjectivity);
+          enrollment.push(data.enrollment);
+        })
+      )
       .catch(error => console.log(error));
+
+    this.setState({ population: { data: population } });
+    this.setState({ childLaborPercentage: { data: childLaborPercentage } });
+    this.setState({ readingLevel: { data: readingLevel } });
+    this.setState({ sentiment: { data: sentiment } });
+    this.setState({ subjectivity: { data: subjectivity } });
+    this.setState({ enrollment: { data: enrollment } });
+    this.setState({ lifeExpectancy: { data: lifeExpectancy } });
   }
 
   //input data from dtatbase to state...
