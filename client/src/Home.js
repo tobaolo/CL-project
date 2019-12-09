@@ -21,6 +21,8 @@ var boundary = require("./mygeodata/ne_10m_admin_0_countries.json")
 console.log(boundary)
 var boundsArray = []
 var tempArr = []
+var countries = []
+var countryInfo = []
 
 const westAfrica = [
   'Benin', 
@@ -42,6 +44,15 @@ const westAfrica = [
   'Senegal', 
   'Sierra Leone',
   'Togo'
+]
+
+const angloAfrica = [
+  'Cameroon',
+  'The Gambia',
+  'Ghana',
+  'Liberia',
+  'Nigeria',
+  'Sierra Leone'
 ]
 
 function CountryHover() {
@@ -81,7 +92,7 @@ function Map() {
   for (var i = 0; i < boundary['features'].length; i++) {
     if (westAfrica.indexOf(boundary['features'][i]['properties']['NAME_EN']) >= 0) {
       tempArr.push(boundary['features'][i]['geometry']['coordinates'])
-      
+      countries.push(boundary['features'][i]['properties']['NAME_EN'])
     }
   }
   console.log(tempArr)
@@ -111,6 +122,13 @@ function Map() {
     
   })
   console.log(boundsArray)
+  console.log(countries)
+  var cnt = 0
+  countries.forEach(country => {
+    countryInfo.push({"name": country, "latlng": boundsArray[cnt]})
+    cnt += 1
+  })
+  console.log(countryInfo)
   
   // Define the LatLng coordinates for the polygon's path.
   
@@ -118,18 +136,36 @@ function Map() {
   return (
     <React.Fragment>
       <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} />
-      { boundsArray.map(x => {
-        return (
-          <Polygon
-            path={ x }
-            geodesic={true}
-            options={{
-              strokeColor: "#ff2527",
-              strokeOpacity: 1,
-              strokeWeight: 2,
-              fillColor: "#ff2527"
-            }}
-          />)}
+      { countryInfo.map(x => {
+        if (angloAfrica.indexOf(x['name']) >=0) {
+          return (
+            <Polygon
+              path={ x['latlng'] }
+              geodesic={true}
+              options={{
+                strokeColor: "#ff2527",
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                fillColor: "#25ff27"
+              }}
+              name = {x['name']}
+            />)
+        } else {
+          return (
+            <Polygon
+              path={ x['latlng'] }
+              geodesic={true}
+              options={{
+                strokeColor: "#ff2527",
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                fillColor: "#ff2527"
+              }}
+              name = {x['name']}
+            />)
+        }
+
+        }
     )} 
     </React.Fragment>
   );
