@@ -39,7 +39,7 @@ class Chart extends Component {
       .then(response => response.json())
       .then(data =>
         data[1].forEach(data => {
-          var population = this.state.population.data;
+          let population = this.state.population.data;
           let lifeExpectancy = this.state.lifeExpectancy.data;
           let childLaborPercentage = this.state.childLaborPercentage.data;
           let readingLevel = this.state.readingLevel.data;
@@ -53,17 +53,18 @@ class Chart extends Component {
           sentiment.push(data.sentiment);
           subjectivity.push(data.subjectivity);
           enrollment.push(data.enrollment);
+          this.setState({ population: { data: population } });
+          this.setState({
+            childLaborPercentage: { data: childLaborPercentage }
+          });
+          this.setState({ readingLevel: { data: readingLevel } });
+          this.setState({ sentiment: { data: sentiment } });
+          this.setState({ subjectivity: { data: subjectivity } });
+          this.setState({ enrollment: { data: enrollment } });
+          this.setState({ lifeExpectancy: { data: lifeExpectancy } });
         })
       )
       .catch(error => console.log(error));
-
-    this.setState({ population: { data: population } });
-    this.setState({ childLaborPercentage: { data: childLaborPercentage } });
-    this.setState({ readingLevel: { data: readingLevel } });
-    this.setState({ sentiment: { data: sentiment } });
-    this.setState({ subjectivity: { data: subjectivity } });
-    this.setState({ enrollment: { data: enrollment } });
-    this.setState({ lifeExpectancy: { data: lifeExpectancy } });
   }
 
   //input data from dtatbase to state...
