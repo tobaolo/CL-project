@@ -19,6 +19,8 @@ const WrappedMap = withScriptjs(withGoogleMap(Map));
 
 var boundary = require("./mygeodata/ne_10m_admin_0_countries.json")
 console.log(boundary)
+var boundsArray = []
+var tempArr = []
 
 const westAfrica = [
   'Benin', 
@@ -75,31 +77,61 @@ function CountryHover() {
 
 function Map() {
 
+
   for (var i = 0; i < boundary['features'].length; i++) {
     if (westAfrica.indexOf(boundary['features'][i]['properties']['NAME_EN']) >= 0) {
-      console.log(boundary['features'][i]['properties']['NAME'])
+      tempArr.push(boundary['features'][i]['geometry']['coordinates'])
+      
     }
   }
+  console.log(tempArr)
+  
+  tempArr[1].forEach(arr => {
+    var countryArr = []
+    arr.forEach(coord => {
+      countryArr.push({"lat": coord[1], "lng": coord[0]})
+    })
+    boundsArray.push(countryArr)
+    
+  })
+  console.log(boundsArray)
+  
   // Define the LatLng coordinates for the polygon's path.
-  var triangleCoords = [
-    { lat: 14, lng: 4 },
-    { lat: 14, lng: 3 },
-    { lat: 15, lng: 4 },
-    { lat: 15, lng: 3 }
-  ];
+  
 
   return (
     <React.Fragment>
       <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} />
-      <Polygon
-        path={triangleCoords}
-        geodesic={true}
-        options={{
-          strokeColor: "#ff2527",
-          strokeOpacity: 1,
-          strokeWeight: 2,
-          fillColor: "#ff2527"
-        }}
+      {/* { boundsArray.map(x => {
+        return (
+<Polygon
+            path={ x }
+            geodesic={true}
+            options={{
+              strokeColor: "#ff2527",
+              strokeOpacity: 1,
+              strokeWeight: 2,
+              fillColor: "#ff2527"
+          }}
+          />) */}
+        )
+      } }
+
+      )
+          <Polygon
+            path={ boundsArray[0] }
+            geodesic={true}
+            options={{
+              strokeColor: "#ff2527",
+              strokeOpacity: 1,
+              strokeWeight: 2,
+              fillColor: "#ff2527"
+          }}
+          />)
+      })
+      }
+      
+        
       />
     </React.Fragment>
   );
