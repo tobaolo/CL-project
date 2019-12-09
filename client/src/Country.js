@@ -16,7 +16,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Jumbotron from "react-bootstrap/Jumbotron";
 
-import Chart from "./components/chart";
+import LineChart from "./components/chart";
 
 import { Link } from "react-router-dom";
 
@@ -158,7 +158,7 @@ class Country extends React.Component {
               onChange={this.updateSliderTimeframe.bind(this)}
             />
           </div>
-          <Chart />
+          <LineChart />
           <div>
             <h3>Articles</h3>
             <ListGroup variant="flush">
