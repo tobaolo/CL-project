@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Bar, Line, Pie } from "react-chartjs-2";
+import Spinner from "react-bootstrap/Spinner";
 
 class Chart extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       countryId: 1,
       countryInfo: [],
       population: { label: "Population", data: [] },
@@ -30,6 +32,7 @@ class Chart extends Component {
   }
 
   componentDidMount() {
+    console.log("hi");
     // Should be this.props.location.pathname
     fetch(`/country/${this.state.countryId}`)
       .then(response => response.json())
@@ -97,31 +100,39 @@ class Chart extends Component {
   }
 
   render() {
-    console.log(this.state.countryInfo);
-    return (
-      <div id="chartdata">
-        <Line
-          data={{
-            datasets: this.chartDataBuilder([
-              "childLaborPercentage",
-              "readingLevel",
-              "enrollment"
-            ]),
-            labels: ["1995", "2000", "2005", "2010", "2015 to Present"],
-            backgroundColor: [
-              "rgba(255,99,132,0.6)",
-              "rgba(54,162,235,0.6)",
-              "rgba(255,206,86,0.6)",
-              "rgba(75,192,192,0.6)",
-              "rgba(153,102,255,0.6)"
-            ]
-          }}
-          options={{
-            maintainAspectRatio: false
-          }}
-        ></Line>
-      </div>
-    );
+    if (this.state.loading) {
+      return (
+        <div className="text-center">
+          <Spinner animation="border" variant="warning" className="mx-auto" />
+        </div>
+      );
+    } else {
+      console.log(this.state.countryInfo);
+      return (
+        <div id="chartdata">
+          <Line
+            data={{
+              datasets: this.chartDataBuilder([
+                "childLaborPercentage",
+                "readingLevel",
+                "enrollment"
+              ]),
+              labels: ["1995", "2000", "2005", "2010", "2015 to Present"],
+              backgroundColor: [
+                "rgba(255,99,132,0.6)",
+                "rgba(54,162,235,0.6)",
+                "rgba(255,206,86,0.6)",
+                "rgba(75,192,192,0.6)",
+                "rgba(153,102,255,0.6)"
+              ]
+            }}
+            options={{
+              maintainAspectRatio: false
+            }}
+          />
+        </div>
+      );
+    }
   }
 }
 

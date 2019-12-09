@@ -67,7 +67,7 @@ class Country extends React.Component {
 
   componentDidMount() {
     // Should be this.props.location.pathname
-    fetch(`/country/${this.state.countryId}`)
+    fetch(this.props.location.pathname)
       .then(response => response.json())
       .then(countryInfo => this.setState({ countryInfo, loading: false }))
       .catch(error => console.log(error));
@@ -159,7 +159,7 @@ class Country extends React.Component {
               onChange={this.updateSliderTimeframe.bind(this)}
             />
           </div>
-          <Chart></Chart>
+          <Chart />
           <div>
             <h3>Articles</h3>
             <ListGroup variant="flush">

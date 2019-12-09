@@ -114,7 +114,7 @@ class Home extends React.Component {
           onMouseEnter={this.handleMouseHover.bind(this)}
           onMouseLeave={this.handleMouseHover.bind(this)}
         >
-          <Link to="/country">
+          <Link to="/country/5">
             <Image
               src="https://www.solidaridadnetwork.org/sites/solidaridadnetwork.org/files/west_africa.JPG"
               alt="This is where our interactive map will go"
