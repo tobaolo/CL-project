@@ -7,7 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
-import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 import {
   GoogleMap,
@@ -19,7 +18,6 @@ import {
 const WrappedMap = withScriptjs(withGoogleMap(Map));
 
 var boundary = require("./mygeodata/ne_10m_admin_0_countries.json")
-console.log(boundary)
 var boundsArray = []
 var tempArr = []
 var countries = []
@@ -65,37 +63,6 @@ const countryID = {
   'Sierra Leone': 6
 }
 
-function CountryHover() {
-  const [show, setShow] = React.useState(true);
-
-  const handleClose = () => setShow(false);
-
-  return (
-    <Modal show={show} onHide={handleClose} centered="true">
-      <Modal.Header closeButton>
-        <Modal.Title>Ghana</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <ul>
-          <li>Population: 29,767,108</li>
-          <li>GDP: 65.556</li>
-          <li>Life Expectancy: 63.463</li>
-          <li>School Enrollment: 103.569</li>
-          <br />
-          <li>
-            <b>Percentage of Children in Labor (Ages 5-17): 30</b>
-          </li>
-        </ul>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
-
 function Map() {
 
   for (var i = 0; i < boundary['features'].length; i++) {
@@ -104,7 +71,6 @@ function Map() {
       countries.push(boundary['features'][i]['properties']['NAME_EN'])
     }
   }
-  console.log(tempArr)
   tempArr.forEach(arr => {
     var countryArr = []
     if (arr.length === 1) {
@@ -124,61 +90,41 @@ function Map() {
     }
     boundsArray.push(countryArr)
   })
-  console.log(boundsArray)
-  console.log(countries)
   var cnt = 0
   countries.forEach(country => {
     countryInfo.push({"name": country, "latlng": boundsArray[cnt]})
     cnt += 1
   })
-  console.log(countryInfo)
   
   // Define the LatLng coordinates for the polygon's path.
-  
   return (
     <React.Fragment>
-      <GoogleMap defaultZoom={5} defaultCenter={{ lat: 14, lng: 4 }} mapTypeId="hybrid">
-      { countryInfo.map(x => {
-        if (angloAfrica.indexOf(x['name']) >=0) {
-          console.log(countryID[x['name']])
-          return (
-              <Polygon
-                onlClick={ () => {
-                  (window.location.pathname =  `/country/${countryID[x['name']] 
-                }`)
-                }}
-                path={ x['latlng'] }
-                geodesic={true}
-                options={{
-                  strokeColor: "#ff2527",
-                  strokeOpacity: 1,
-                  strokeWeight: 0,
-                  fillColor: "#25ff27"
-                }}
-                key = {x['name']}
-              />
-
-            )
-        } else {
-          return (
-            <Polygon
-              path={ x['latlng'] }
-              geodesic={true}
-              options={{
-                strokeColor: "#ff2527",
-                strokeOpacity: 1,
-                strokeWeight: 0,
-                fillColor: "#ff2527"
-              }}
-              key = {x['name']}
-            />
-            )}
-      
-            })}
-        </GoogleMap>
-        </React.Fragment>
-      );
-    }
+      <GoogleMap defaultZoom={5.5} defaultCenter={{ lat: 9, lng: 4 }} mapTypeId="hybrid">
+        { countryInfo.map(x => {
+          if (angloAfrica.indexOf(x['name']) >=0) {
+            return (
+                <Polygon
+                  onClick={ () => {
+                    (window.location.pathname =  `/country/${countryID[x['name']] 
+                  }`)
+                  }}
+                  path={ x['latlng'] }
+                  geodesic={true}
+                  options={{
+                    strokeColor: "#ff2527",
+                    strokeOpacity: 1,
+                    strokeWeight: 0,
+                    fillColor: "#ff25ff"
+                  }}
+                  key = {x['name']}
+                />
+              )
+          } 
+        })}
+      </GoogleMap>
+    </React.Fragment>
+  );
+}
 
 class Home extends React.Component {
   constructor(props) {
@@ -190,7 +136,6 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.setState({loading: false})
-    
   }
 
   render() {
