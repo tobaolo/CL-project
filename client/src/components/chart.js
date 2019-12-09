@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import Spinner from "react-bootstrap/Spinner";
-import { forEach } from "gl-matrix/src/gl-matrix/vec2";
 
 class Chart extends Component {
   constructor(props) {
@@ -9,7 +8,6 @@ class Chart extends Component {
     this.state = {
       loading: true,
       countryId: 1,
-      countryInfo: [],
       population: { label: "Population", data: [] },
       lifeExpectancy: { label: "Life Expectancy", data: [] },
       childLaborPercentage: { label: "Child Labor Percentage", data: [] },
@@ -62,6 +60,7 @@ class Chart extends Component {
           this.setState({ subjectivity: { data: subjectivity } });
           this.setState({ enrollment: { data: enrollment } });
           this.setState({ lifeExpectancy: { data: lifeExpectancy } });
+          this.setState({ loading: false });
         })
       )
       .catch(error => console.log(error));
